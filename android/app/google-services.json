@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "251287454758",
+    "project_id": "unicorn-nursery-dc96e",
+    "storage_bucket": "unicorn-nursery-dc96e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:251287454758:android:1ed93a58d10a7aff8952e7",
+        "android_client_info": {
+          "package_name": "com.app.unicorn_qatar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQlUcntYjndKB3CQaJLyZSxtr1nWxNeyM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:251287454758:android:3ad9ffa9f6032d478952e7",
+        "android_client_info": {
+          "package_name": "com.app.unicornqatar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQlUcntYjndKB3CQaJLyZSxtr1nWxNeyM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
