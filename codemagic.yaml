@@ -15,6 +15,10 @@ workflows:
       vars:
         BUNDLE_ID: com.app.unicorn-qatar
     scripts:
+      - name: Restore Firebase asset required by pubspec
+        script: |
+          chmod +x tool/ensure_firebase_asset.sh
+          ./tool/ensure_firebase_asset.sh
       - name: Get Flutter packages
         script: flutter pub get
       - name: Install CocoaPods
