@@ -47,6 +47,7 @@ app.*.map.json
 # Signing secrets — never commit
 *.p8
 *.p12
+*.pem
 *.mobileprovision
 android/key.properties
 android/**/*.jks
