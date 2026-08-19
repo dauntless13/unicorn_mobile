@@ -6,6 +6,8 @@ workflows:
     integrations:
       app_store_connect: unicorn_asc
     environment:
+      groups:
+        - firebase_credentials
       flutter: stable
       xcode: latest
       cocoapods: default
