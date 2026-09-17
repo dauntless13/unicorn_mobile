@@ -175,7 +175,7 @@ Questions copyWith({  String? title,
     if (_answerOptions.isNotEmpty) {
       return _answerOptions.map((item) => item.code).toList();
     }
-    return _optionCodes.isEmpty ? const ['A', 'D', 'E'] : _optionCodes;
+    return _optionCodes.isEmpty ? const ['OPT1', 'OPT2', 'OPT3'] : _optionCodes;
   }
 
   Map<String, dynamic> toJson() {
@@ -193,17 +193,17 @@ Questions copyWith({  String? title,
   }
 
   static List<QuestionAnswerOption> _parseAnswerOptions(dynamic json) {
-    const allowed = {'A', 'D', 'E'};
     final items = <QuestionAnswerOption>[];
     final seen = <String>{};
 
     void addOption(String code, String label) {
-      if (!allowed.contains(code) || seen.contains(code)) return;
-      seen.add(code);
+      final nextCode = code.trim();
+      if (nextCode.isEmpty || seen.contains(nextCode)) return;
+      seen.add(nextCode);
       items.add(QuestionAnswerOption(
-        code: code,
+        code: nextCode,
         label: label.trim().isEmpty
-            ? QuestionAnswerOption.defaultMeaning(code)
+            ? QuestionAnswerOption.defaultMeaning(nextCode)
             : label.trim(),
       ));
     }
@@ -213,7 +213,7 @@ Questions copyWith({  String? title,
       for (final item in fromOptions) {
         if (item is Map) {
           addOption(
-            item['code']?.toString().trim().toUpperCase() ?? '',
+            item['code']?.toString() ?? '',
             (item['meaning'] ?? item['label'] ?? '').toString(),
           );
         }
@@ -222,10 +222,15 @@ Questions copyWith({  String? title,
 
     if (items.isEmpty) {
       final fromCodes = json['optionCodes'];
+      final labels = json['optionLabels'];
       if (fromCodes is List) {
         for (final item in fromCodes) {
-          final code = item?.toString().trim().toUpperCase() ?? '';
-          addOption(code, QuestionAnswerOption.defaultMeaning(code));
+          final code = item?.toString() ?? '';
+          String label = QuestionAnswerOption.defaultMeaning(code);
+          if (labels is Map && labels[code] != null) {
+            label = labels[code].toString();
+          }
+          addOption(code, label);
         }
       }
     }

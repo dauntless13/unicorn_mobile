@@ -235,7 +235,7 @@ class StudentEvalTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           child: Text(
-            '${option.code} · ${option.meaning}',
+            option.meaning,
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w700,
@@ -316,31 +316,18 @@ class StudentEvalTile extends StatelessWidget {
                           color: option.color.withValues(alpha: isSelected ? 1 : 0.35),
                         ),
                       ),
-                      child: Column(
-                        children: [
-                          Text(
-                            option.code,
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w800,
-                              color: isSelected ? Colors.white : option.color,
-                            ),
+                      child: Center(
+                        child: Text(
+                          option.meaning,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                            color: isSelected ? Colors.white : option.color,
                           ),
-                          const SizedBox(height: 2),
-                          Text(
-                            option.meaning,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 9.5,
-                              fontWeight: FontWeight.w600,
-                              color: isSelected
-                                  ? Colors.white.withValues(alpha: 0.92)
-                                  : option.color,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                   ),

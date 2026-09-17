@@ -118,18 +118,41 @@ class BulkEvaluationController extends GetxController {
   }
 
   List<EvalRatingOption> optionsFor(Questions question) {
-    final palette = {for (final item in ratings) item.code: item};
+    const palette = [
+      Color(0xFF22C55E),
+      Color(0xFFF59E0B),
+      Color(0xFF6366F1),
+      Color(0xFF0EA5E9),
+      Color(0xFFEF4444),
+      Color(0xFF14B8A6),
+    ];
     final fromApi = question.answerOptions;
     if (fromApi.isNotEmpty) {
-      return fromApi.map((item) {
-        final base = palette[item.code] ?? ratings.first;
-        return base.withMeaning(item.label);
-      }).toList();
+      return [
+        for (var i = 0; i < fromApi.length; i++)
+          EvalRatingOption(
+            code: fromApi[i].code,
+            titleKey: '',
+            subtitleKey: '',
+            meaning: fromApi[i].label.trim().isEmpty
+                ? QuestionAnswerOption.defaultMeaning(fromApi[i].code)
+                : fromApi[i].label.trim(),
+            color: palette[i % palette.length],
+          ),
+      ];
     }
     final codes = question.optionCodes;
-    final filtered =
-        ratings.where((item) => codes.contains(item.code)).toList();
-    return filtered.isEmpty ? ratings.toList() : filtered;
+    if (codes.isEmpty) return ratings.toList();
+    return [
+      for (var i = 0; i < codes.length; i++)
+        EvalRatingOption(
+          code: codes[i],
+          titleKey: '',
+          subtitleKey: '',
+          meaning: QuestionAnswerOption.defaultMeaning(codes[i]),
+          color: palette[i % palette.length],
+        ),
+    ];
   }
 
   List<MapEntry<String, List<Questions>>> get questionGroups {
@@ -179,11 +202,13 @@ class BulkEvaluationController extends GetxController {
   static DateTime _monthStart(DateTime date) => DateTime(date.year, date.month, 1);
 
   static String ratingCode(String? raw) {
-    final value = (raw ?? '').trim().toUpperCase();
-    if (value == 'A' || value == 'ACHIEVED') return 'A';
-    if (value == 'D' || value == 'DEVELOPING') return 'D';
-    if (value == 'E' || value == 'EMERGING') return 'E';
-    return '';
+    final value = (raw ?? '').trim();
+    if (value.isEmpty) return '';
+    final upper = value.toUpperCase();
+    if (upper == 'ACHIEVED') return 'A';
+    if (upper == 'DEVELOPING') return 'D';
+    if (upper == 'EMERGING') return 'E';
+    return value;
   }
 
   Future<void> load(BuildContext context) async {

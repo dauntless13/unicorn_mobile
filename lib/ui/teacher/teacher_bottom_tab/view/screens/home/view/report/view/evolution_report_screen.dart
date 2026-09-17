@@ -71,24 +71,39 @@ class _EvolutionReportScreenState extends State<EvolutionReportScreen> {
   ];
 
   List<_EvaluationOption> _optionsFor(Questions question) {
-    final palette = {for (final item in _options) item.code: item};
+    const palette = [
+      Color(0xFF22C55E),
+      Color(0xFFF59E0B),
+      Color(0xFF6366F1),
+      Color(0xFF0EA5E9),
+      Color(0xFFEF4444),
+      Color(0xFF14B8A6),
+    ];
     final fromApi = question.answerOptions;
     if (fromApi.isNotEmpty) {
-      return fromApi.map((item) {
-        final base = palette[item.code] ?? _options.first;
-        final label = item.label.trim();
-        return _EvaluationOption(
-          code: item.code,
-          titleKey: base.titleKey,
-          subtitleKey: base.subtitleKey,
-          meaning: label.isEmpty ? base.meaning : label,
-          color: base.color,
-        );
-      }).toList();
+      return [
+        for (var i = 0; i < fromApi.length; i++)
+          _EvaluationOption(
+            code: fromApi[i].code,
+            titleKey: '',
+            subtitleKey: '',
+            meaning: fromApi[i].label.trim().isEmpty
+                ? QuestionAnswerOption.defaultMeaning(fromApi[i].code)
+                : fromApi[i].label.trim(),
+            color: palette[i % palette.length],
+          ),
+      ];
     }
-    return _options
-        .where((option) => question.optionCodes.contains(option.code))
-        .toList();
+    return [
+      for (var i = 0; i < question.optionCodes.length; i++)
+        _EvaluationOption(
+          code: question.optionCodes[i],
+          titleKey: '',
+          subtitleKey: '',
+          meaning: QuestionAnswerOption.defaultMeaning(question.optionCodes[i]),
+          color: palette[i % palette.length],
+        ),
+    ];
   }
 
   @override
@@ -550,13 +565,10 @@ class _EvolutionReportScreenState extends State<EvolutionReportScreen> {
                 color: option.color.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
               ),
-              child: Center(
-                child: MyRegularText(
-                  label: option.code,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w800,
-                  color: option.color,
-                ),
+              child: Icon(
+                Icons.check_rounded,
+                color: option.color,
+                size: 20,
               ),
             ),
             const SizedBox(width: 12),
