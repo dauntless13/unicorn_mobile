@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+import '../../../../../../../../core/utils/android_media_access.dart';
 import 'package:intl/intl.dart';
 import 'package:toastification/toastification.dart';
 
@@ -796,7 +796,7 @@ class KidsController extends GetxController {
   Future<void> pickAndUploadStudentImage(BuildContext context) async {
     try {
       final XFile? file =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
+          await AppMediaPicker.pickImage(source: ImageSource.gallery);
       if (file == null) return;
 
       isStudentImageUploading.value = true;

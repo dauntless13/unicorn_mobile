@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:unicorn/core/utils/android_media_access.dart';
 import '../../../../../../../model/story_model.dart';
 import '../controller/home_controller.dart';
 
@@ -21,8 +21,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
       Theme.of(context).brightness == Brightness.light;
 
   Future<void> _pickImage(ImageSource source) async {
-    final picker = ImagePicker();
-    final picked = await picker.pickImage(source: source);
+    final picked = await AppMediaPicker.pickImage(source: source);
 
     if (picked != null) {
       setState(() => _image = File(picked.path));

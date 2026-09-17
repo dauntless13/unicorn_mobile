@@ -72,6 +72,64 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:34.9.0"))
     implementation("com.google.firebase:firebase-analytics")
 }
+
+val forbiddenMediaReadPermissions = listOf(
+    "android.permission.READ_MEDIA_IMAGES",
+    "android.permission.READ_MEDIA_VIDEO",
+    "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
+)
+
+fun File.containsShippedMediaReadPermission(permission: String): Boolean {
+    if (!exists()) return false
+    val text = readText()
+    val declared = Regex("""android:name="$permission"""")
+    if (!declared.containsMatchIn(text)) return false
+    val removed = Regex("""android:name="$permission"[^>]*tools:node="remove"""")
+    return !removed.containsMatchIn(text)
+}
+
+afterEvaluate {
+    android.applicationVariants.configureEach {
+        val variantName = name
+        val capitalized = variantName.replaceFirstChar { it.uppercase() }
+        val checkTaskName = "check${capitalized}PhotoPickerPolicy"
+        val processManifestTask = "process${capitalized}MainManifest"
+
+        tasks.register(checkTaskName) {
+            dependsOn(processManifestTask)
+            doLast {
+                val buildDir = layout.buildDirectory.get().asFile
+                val candidates = listOf(
+                    File(buildDir, "intermediates/merged_manifest/$variantName/process${capitalized}MainManifest/AndroidManifest.xml"),
+                    File(buildDir, "intermediates/merged_manifests/$variantName/AndroidManifest.xml"),
+                    File(buildDir, "intermediates/packaged_manifests/$variantName/AndroidManifest.xml"),
+                    File(buildDir, "intermediates/merged_manifest/$variantName/AndroidManifest.xml"),
+                )
+                val manifest = candidates.firstOrNull { it.exists() }
+                    ?: throw GradleException(
+                        "Could not find merged AndroidManifest for $variantName. Looked in:\n" +
+                            candidates.joinToString("\n") { " - $it" },
+                    )
+                val violations = forbiddenMediaReadPermissions.filter { permission ->
+                    manifest.containsShippedMediaReadPermission(permission)
+                }
+                if (violations.isNotEmpty()) {
+                    throw GradleException(
+                        "Google Play Photo Picker policy: these permissions must not ship in the merged manifest:\n" +
+                            violations.joinToString("\n") { " - $it" } +
+                            "\nManifest: ${manifest.absolutePath}",
+                    )
+                }
+            }
+        }
+
+        listOf("assemble$capitalized", "bundle$capitalized").forEach { taskName ->
+            tasks.matching { it.name == taskName }.configureEach {
+                dependsOn(checkTaskName)
+            }
+        }
+    }
+}
 //plugins {
 //    id("com.android.application")
 //    id("kotlin-android")

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:gal/gal.dart';
@@ -25,6 +26,10 @@ class GallerySaveHelper {
   }
 
   static Future<bool> _ensureAccess() async {
+    // Android 10+ inserts into MediaStore without READ_MEDIA_* permissions.
+    // Do not call Gal.requestAccess() on modern Android — that path is how
+    // Google Play flags an in-app photo-permission experience.
+    if (Platform.isAndroid) return true;
     if (await Gal.hasAccess()) return true;
     return Gal.requestAccess();
   }

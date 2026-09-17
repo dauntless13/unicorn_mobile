@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:unicorn/core/utils/android_media_access.dart';
 import 'package:toastification/toastification.dart';
 
 import '../../../../../../../../service/api_service/api_worker.dart';
@@ -263,8 +263,8 @@ class ParentProfileController extends GetxController {
 
   Future<void> pickAndUploadImage(BuildContext context) async {
     try {
-      final ImagePicker picker = ImagePicker();
-      final XFile? file = await picker.pickImage(source: ImageSource.gallery);
+      final XFile? file =
+          await AppMediaPicker.pickImage(source: ImageSource.gallery);
 
       if (file == null) return;
 

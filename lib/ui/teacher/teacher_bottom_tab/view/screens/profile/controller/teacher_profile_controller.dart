@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:unicorn/core/utils/android_media_access.dart';
 import 'package:toastification/toastification.dart';
 import 'package:unicorn/service/session/session_helper.dart';
 
@@ -397,9 +397,8 @@ class TeacherProfileController extends GetxController {
   RxBool isImageUploading = false.obs;
   Future<void> pickAndUploadImage(BuildContext context) async {
     try {
-      final ImagePicker picker = ImagePicker();
       final XFile? file =
-      await picker.pickImage(source: ImageSource.gallery);
+          await AppMediaPicker.pickImage(source: ImageSource.gallery);
 
       if (file == null) return;
 

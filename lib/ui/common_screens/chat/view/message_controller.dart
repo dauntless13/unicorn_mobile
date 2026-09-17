@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart' as img;
-import 'package:image_picker/image_picker.dart';
+import 'package:unicorn/core/utils/android_media_access.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
@@ -117,7 +117,7 @@ class ChatController extends GetxController {
   int recordingSeconds = 0;
 
   // ── Image picker ──────────────────────────────────────────────────────────
-  final ImagePicker _picker = ImagePicker();
+
 
   // ─────────────────────────────────────────────────────────────────────────
   @override
@@ -234,7 +234,7 @@ class ChatController extends GetxController {
   // =========================================================================
 
   Future<File?> pickImageFromGallery() async {
-    final picked = await _picker.pickImage(
+    final picked = await AppMediaPicker.pickImage(
       source: ImageSource.gallery,
       imageQuality: 75,
     );
@@ -243,7 +243,7 @@ class ChatController extends GetxController {
   }
 
   Future<File?> pickImageFromCamera() async {
-    final picked = await _picker.pickImage(
+    final picked = await AppMediaPicker.pickImage(
       source: ImageSource.camera,
       preferredCameraDevice: CameraDevice.rear,
       imageQuality: 75,
@@ -273,7 +273,7 @@ class ChatController extends GetxController {
   // =========================================================================
 
   Future<File?> pickVideoFromGallery() async {
-    final picked = await _picker.pickVideo(
+    final picked = await AppMediaPicker.pickVideo(
       source: ImageSource.gallery,
       maxDuration: const Duration(minutes: 5),
     );
@@ -281,7 +281,7 @@ class ChatController extends GetxController {
   }
 
   Future<File?> pickVideoFromCamera() async {
-    final picked = await _picker.pickVideo(
+    final picked = await AppMediaPicker.pickVideo(
       source: ImageSource.camera,
       maxDuration: const Duration(minutes: 5),
     );

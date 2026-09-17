@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:unicorn/core/utils/android_media_access.dart';
 import 'package:toastification/toastification.dart';
 
 import '../../../../../../../../../service/api_service/api_worker.dart';
@@ -13,7 +13,6 @@ import '../../add_post/mode/upload_video/upload_video_request.dart';
 
 class AddStoryController extends GetxController {
   final ApiWorker apiWorker = Get.put(ApiWorker());
-  final ImagePicker _picker = ImagePicker();
   Rx<File?> selectedFile = Rx<File?>(null);
   RxString selectedMediaType = "".obs; // IMAGE or VIDEO
   RxBool isUploading = false.obs;
@@ -90,7 +89,7 @@ class AddStoryController extends GetxController {
               subtitle: "Use your camera".tr,
               onTap: () async {
                 Get.back();
-                final XFile? file = await _picker.pickImage(
+                final XFile? file = await AppMediaPicker.pickImage(
                   source: ImageSource.camera,
                   imageQuality: 80,
                 );
@@ -112,7 +111,7 @@ class AddStoryController extends GetxController {
               subtitle: "Capture a video clip".tr,
               onTap: () async {
                 Get.back();
-                final XFile? file = await _picker.pickVideo(
+                final XFile? file = await AppMediaPicker.pickVideo(
                   source: ImageSource.camera,
                 );
                 if (file != null) {
@@ -168,7 +167,7 @@ class AddStoryController extends GetxController {
   //   }
   // }
   Future<void> openGallery() async {
-    final XFile? file = await _picker.pickMedia();
+    final XFile? file = await AppMediaPicker.pickMedia();
 
     if (file == null) return;
 

@@ -23,11 +23,12 @@ class AddPostRequest {
 
   /// ✅ Convert Object → JSON (API Request)
   Map<String, dynamic> toJson() {
+    final slug = classSlug;
     return {
       "lang": lang,
       "type": type,
-      "classSlug": classSlug,
-      "classSlugs": classSlugs ?? (classSlug == null ? [] : [classSlug]),
+      "classSlug": slug,
+      "classSlugs": classSlugs ?? (slug == null ? <String>[] : [slug]),
       "publishType": publishType,
       "studentSlugs": studentSlugs,
       "mediaType": mediaType,

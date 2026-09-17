@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:unicorn/core/utils/android_media_access.dart';
 import 'package:toastification/toastification.dart';
 
 import '../../../../../../../../../service/api_service/api_worker.dart';
@@ -20,8 +20,6 @@ import '../mode/upload_video/upload_video_request.dart';
 class AddPostController extends GetxController {
   final ApiWorker apiWorker = Get.put(ApiWorker());
 
-  final ImagePicker _picker = ImagePicker();
-
   RxList<File> selectedMedia = <File>[].obs;
   RxList<bool> mediaIsVideo = <bool>[].obs;
   RxString selectedMediaType = 'IMAGE'.obs;
@@ -30,9 +28,9 @@ class AddPostController extends GetxController {
 
   // ================= PICK IMAGE =================
   Future<void> pickImage() async {
-    final List<XFile> files = await _picker.pickMultiImage();
+    final List<XFile> files = await AppMediaPicker.pickImages();
 
-    if (files != null && files.isNotEmpty) {
+    if (files.isNotEmpty) {
       clearMedia();
       selectedMediaType.value = "IMAGE";
       for (var file in files) {
@@ -43,7 +41,7 @@ class AddPostController extends GetxController {
   }
 
   Future<void> captureImageFromCamera() async {
-    final XFile? file = await _picker.pickImage(
+    final XFile? file = await AppMediaPicker.pickImage(
       source: ImageSource.camera,
       imageQuality: 85,
     );
@@ -58,7 +56,7 @@ class AddPostController extends GetxController {
 
   // ================= PICK VIDEO =================
   Future<void> pickVideo() async {
-    final XFile? file = await _picker.pickVideo(source: ImageSource.gallery);
+    final XFile? file = await AppMediaPicker.pickVideo(source: ImageSource.gallery);
 
     if (file != null) {
       clearMedia();
@@ -69,7 +67,7 @@ class AddPostController extends GetxController {
   }
 
   Future<void> captureVideoFromCamera() async {
-    final XFile? file = await _picker.pickVideo(
+    final XFile? file = await AppMediaPicker.pickVideo(
       source: ImageSource.camera,
     );
 
@@ -430,12 +428,15 @@ class AddPostController extends GetxController {
 
   void toggleStudent(StudentData student, {bool isPrivate = true}) {
     if (!isPrivate && student.allowPublicMedia == false) {
-      showToast(
-        Get.context,
-        "Error",
-        "public_media_not_allowed".tr,
-        type: ToastificationType.error,
-      );
+      final toastContext = Get.context;
+      if (toastContext != null) {
+        showToast(
+          toastContext,
+          "Error",
+          "public_media_not_allowed".tr,
+          type: ToastificationType.error,
+        );
+      }
       return;
     }
     final index = selectedStudents.indexWhere((s) => s.slug == student.slug);
