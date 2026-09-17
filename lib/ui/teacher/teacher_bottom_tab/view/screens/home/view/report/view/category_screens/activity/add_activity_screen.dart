@@ -20,6 +20,7 @@ class AddActivityScreen extends StatefulWidget {
 
 class _AddActivityScreenState extends State<AddActivityScreen> {
   final ActivityController controller = Get.put(ActivityController());
+  final TextEditingController notesController = TextEditingController();
   String selectedActivity = 'PE';
   int selectedMinutes = 30;
   String? slug;
@@ -27,7 +28,18 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
   @override
   void initState() {
     super.initState();
-    slug = Get.arguments is String ? Get.arguments as String : Get.arguments?.toString();
+    final args = Get.arguments;
+    if (args is Map) {
+      slug = args['slug']?.toString();
+    } else if (args is String) {
+      slug = args;
+    }
+  }
+
+  @override
+  void dispose() {
+    notesController.dispose();
+    super.dispose();
   }
 
   String get _date {
@@ -104,6 +116,49 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                       SelectOption(value: '60', label: 'duration_60'.tr),
                     ],
                   ),
+                  const SizedBox(height: 22),
+                  MyRegularText(
+                    label: 'notes'.tr,
+                    fontWeight: FontWeight.w700,
+                    align: TextAlign.start,
+                    color: primaryText(context),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: light ? Colors.white : const Color(0xFF1A1A1A),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: light
+                            ? const Color(0xFFE2E8F0)
+                            : Colors.white.withValues(alpha: 0.12),
+                      ),
+                    ),
+                    child: TextField(
+                      controller: notesController,
+                      maxLines: 4,
+                      minLines: 3,
+                      textInputAction: TextInputAction.newline,
+                      style: TextStyle(
+                        color: light ? const Color(0xFF0F172A) : Colors.white,
+                        fontSize: 14.5,
+                        height: 1.4,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'note_hint'.tr,
+                        hintStyle: TextStyle(
+                          color: light
+                              ? const Color(0xFF94A3B8)
+                              : Colors.white38,
+                        ),
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 12,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -123,10 +178,15 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                               : selectedMinutes == 45
                                   ? 'duration_45'.tr
                                   : 'duration_60'.tr;
+                      final note = notesController.text.trim();
                       final confirmed = await confirmLogAdd(
                         context,
                         title: 'add_activity'.tr,
-                        details: [selectedActivity.tr, duration],
+                        details: [
+                          selectedActivity.tr,
+                          duration,
+                          if (note.isNotEmpty) note,
+                        ],
                       );
                       if (!confirmed || !context.mounted) return;
                       controller.createActivity(
@@ -136,7 +196,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                         date: _date,
                         startTime: range.start,
                         endTime: range.end,
-                        description: '',
+                        notes: note,
                       );
                     },
                   );

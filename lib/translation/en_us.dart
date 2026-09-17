@@ -639,7 +639,7 @@ const Map<String, String> enUS = {
   'Poop': 'Poop',
   'PE': 'PE',
   'CIRCLE_TIME': 'Circle Time',
-  'MISS_PLAY': 'Miss Play',
+  'MISS_PLAY': 'Play',
   'STORY_TIME': 'Story Time',
   'DAILY_ACTIVITY': 'Daily Activity',
   'ARABIC_AND_ISLAMIC': 'Arabic and Islamic',

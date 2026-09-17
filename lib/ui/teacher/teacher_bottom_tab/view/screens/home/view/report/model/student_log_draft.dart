@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class MealEntry {
   MealEntry({
     required this.id,
@@ -130,6 +132,8 @@ class StudentLogDraft {
   final List<NapEntry> removedNaps = [];
   final List<ActivityEntry> removedActivities = [];
   final List<String> originalMoods = [];
+  final List<String> existingNotes = [];
+  final TextEditingController noteController = TextEditingController();
   bool hadExistingReport = false;
 
   int get mealCount => meals.length;
@@ -137,8 +141,10 @@ class StudentLogDraft {
   int get hygieneCount => hygiene.length;
   int get napCount => naps.length;
   int get activityCount => activities.length;
+  bool get hasNewNote => noteController.text.trim().isNotEmpty;
+  int get noteCount => existingNotes.length + (hasNewNote ? 1 : 0);
   int get itemCount =>
-      mealCount + moodCount + hygieneCount + napCount + activityCount;
+      mealCount + moodCount + hygieneCount + napCount + activityCount + noteCount;
   bool get hasData => itemCount > 0;
 
   bool get moodsChanged {
@@ -156,7 +162,8 @@ class StudentLogDraft {
       removedHygiene.isNotEmpty ||
       removedNaps.isNotEmpty ||
       removedActivities.isNotEmpty ||
-      (moodsChanged && moods.isNotEmpty);
+      (moodsChanged && moods.isNotEmpty) ||
+      hasNewNote;
 
   int get changeCount {
     var count = 0;
@@ -169,8 +176,13 @@ class StudentLogDraft {
     count += removedNaps.length;
     count += removedActivities.length;
     if (moodsChanged && moods.isNotEmpty) count += 1;
+    if (hasNewNote) count += 1;
     return count;
   }
 
   int get apiCount => changeCount;
+
+  void dispose() {
+    noteController.dispose();
+  }
 }

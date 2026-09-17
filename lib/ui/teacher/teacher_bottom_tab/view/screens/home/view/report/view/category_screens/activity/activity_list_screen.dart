@@ -143,11 +143,16 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
 
                       formattedDate = "$dateStr ${'at'.tr} $timeStr";
                     }
+                    final type = activity.type ?? '';
+                    final title = type.tr == type
+                        ? type.replaceAll('_', ' ')
+                        : type.tr;
                     return _mealTile(
                       context,
                       {
                         "time": formattedDate,
-                        "title": (activity.type ?? "").replaceAll('_', ' '),
+                        "title": title,
+                        "note": data?.description?.trim() ?? '',
                       },
                     );
                   },
@@ -213,6 +218,18 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
               ),
             ],
           ),
+          if ((meal['note'] ?? '').isNotEmpty) ...[
+            const SizedBox(height: 6),
+            Padding(
+              padding: const EdgeInsets.only(left: 34),
+              child: MyRegularText(
+                label: meal['note']!,
+                fontSize: 13,
+                color: light ? const Color(0xFF64748B) : Colors.white70,
+                align: TextAlign.start,
+              ),
+            ),
+          ],
         ],
       ),
     );

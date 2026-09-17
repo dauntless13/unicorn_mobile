@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:toastification/toastification.dart';
+import 'package:unicorn/ui/teacher/teacher_bottom_tab/view/screens/home/view/report/model/notes/add_notes/add_notes_request.dart';
 
 import '../../../../../../../../../../../../core/utils/report_time_utils.dart';
 import '../../../../../../../../../../../../service/api_service/api_worker.dart';
@@ -23,7 +24,7 @@ class ActivityController extends GetxController {
     required String date,
     required String startTime,
     required String endTime,
-    required String description,
+    String notes = '',
   }) async {
     try {
       /// ================= VALIDATION =================
@@ -64,12 +65,13 @@ class ActivityController extends GetxController {
       final parsedDate = DateFormat("d-M-yyyy").parse(date);
       final formattedDate = DateFormat("yyyy-MM-dd").format(parsedDate);
 
+      final trimmedNotes = notes.trim();
       final response = await apiWorker.createActivityApi(
         AddActivityRequest(
           activity: apiActivity,
           startTime: startTime,
           endTime: endTime,
-          description: description,
+          description: trimmedNotes,
           lang: LanguageController.to.apiLanguage,
           date: formattedDate,
         ),
@@ -78,6 +80,18 @@ class ActivityController extends GetxController {
       );
 
       if (response?.success == true) {
+        if (trimmedNotes.isNotEmpty && slug.isNotEmpty) {
+          await apiWorker.addNotesApi(
+            AddNotesRequest(
+              lang: LanguageController.to.apiLanguage,
+              content: trimmedNotes,
+              date: formattedDate,
+            ),
+            context,
+            slug,
+          );
+        }
+
         showToast(
           context,
           "Success",

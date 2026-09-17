@@ -13,6 +13,7 @@ import '../../../../profile/model/get_all_class/get_all_class_request.dart';
 import '../../../../profile/model/get_all_class/get_all_class_response.dart';
 import '../../add_post/mode/list_student_by_class/list_student_by_class_request.dart';
 import '../../add_post/mode/list_student_by_class/list_student_by_class_response.dart';
+import '../model/notes/add_notes/add_notes_request.dart';
 import '../model/mood_update/mood_update_request.dart';
 import '../model/report_details_by_student_slug/report_details_by_student_slug_request.dart';
 import '../model/report_details_by_student_slug/report_details_by_student_slug_response.dart';
@@ -122,7 +123,7 @@ class QuickLogController extends GetxController {
 
   Future<void> selectClass(BuildContext context, Class value) async {
     selectedClass.value = value;
-    drafts.clear();
+    _disposeDrafts();
     expandedSlug.value = null;
     _changed();
     await fetchStudents(context);
@@ -170,7 +171,7 @@ class QuickLogController extends GetxController {
     try {
       isStudentLoading.value = true;
       studentList.clear();
-      drafts.clear();
+      _disposeDrafts();
 
       final response = await apiWorker.listStudentByClassApi(
         ListStudentByClassRequest(
@@ -197,8 +198,24 @@ class QuickLogController extends GetxController {
     await loadReports(context);
   }
 
-  void _resetDrafts() {
+  void _disposeDrafts({bool immediate = false}) {
+    final old = List<StudentLogDraft>.from(drafts.values);
     drafts.clear();
+    void drop() {
+      for (final draft in old) {
+        draft.dispose();
+      }
+    }
+
+    if (immediate) {
+      drop();
+      return;
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) => drop());
+  }
+
+  void _resetDrafts() {
+    _disposeDrafts();
     for (final student in studentList) {
       final slug = student.slug;
       if (slug != null && slug.isNotEmpty) {
@@ -206,6 +223,12 @@ class QuickLogController extends GetxController {
       }
     }
     _changed();
+  }
+
+  @override
+  void onClose() {
+    _disposeDrafts(immediate: true);
+    super.onClose();
   }
 
   Future<void> loadReports(BuildContext context) async {
@@ -270,6 +293,8 @@ class QuickLogController extends GetxController {
     draft.removedHygiene.clear();
     draft.removedNaps.clear();
     draft.removedActivities.clear();
+    draft.existingNotes.clear();
+    draft.noteController.clear();
 
     for (final meal in data.mealsAndSnacks ?? []) {
       final mealName = _normalizeMeal(meal.mealName);
@@ -351,6 +376,13 @@ class QuickLogController extends GetxController {
           originalStartTime: start,
         ),
       );
+    }
+
+    for (final note in data.note ?? []) {
+      final content = (note.content ?? '').trim();
+      if (content.isNotEmpty) {
+        draft.existingNotes.add(content);
+      }
     }
 
     draft.hadExistingReport = draft.hasData;
@@ -864,6 +896,23 @@ class QuickLogController extends GetxController {
             MoodUpdateRequest(
               mood: draft.moods.map((m) => m.toUpperCase()).toList(),
               lang: lang,
+              date: date,
+            ),
+            context,
+            draft.slug,
+          );
+          return res?.success == true;
+        });
+        success ? ok++ : fail++;
+        saveDone.value += 1;
+      }
+
+      if (draft.hasNewNote) {
+        final success = await _safe(() async {
+          final res = await apiWorker.addNotesApi(
+            AddNotesRequest(
+              lang: lang,
+              content: draft.noteController.text.trim(),
               date: date,
             ),
             context,

@@ -634,7 +634,7 @@ const Map<String, String> arSA = {
   'Poop': 'براز',
   'PE': 'تربية بدنية',
   'CIRCLE_TIME': 'وقت الحلقة',
-  'MISS_PLAY': 'اللعب الحر',
+  'MISS_PLAY': 'لعب',
   'STORY_TIME': 'وقت القصة',
   'DAILY_ACTIVITY': 'النشاط اليومي',
   'ARABIC_AND_ISLAMIC': 'العربية والإسلامية',

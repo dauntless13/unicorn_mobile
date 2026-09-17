@@ -122,6 +122,11 @@ class StudentLogTile extends StatelessWidget {
                       draft.napCount,
                       const Color(0xFF6366F1),
                     ),
+                    _countBadge(
+                      Icons.sticky_note_2_rounded,
+                      draft.noteCount,
+                      const Color(0xFF0C7189),
+                    ),
                     Icon(
                       expanded
                           ? Icons.keyboard_arrow_up_rounded
@@ -148,6 +153,8 @@ class StudentLogTile extends StatelessWidget {
                     _pottySection(context, light, draft),
                     const SizedBox(height: 12),
                     _napSection(context, light, draft),
+                    const SizedBox(height: 12),
+                    _notesSection(light, draft),
                   ],
                 ),
               ),
@@ -536,6 +543,68 @@ class StudentLogTile extends StatelessWidget {
             ),
           );
         }),
+      ],
+    );
+  }
+
+  Widget _notesSection(bool light, StudentLogDraft draft) {
+    const color = Color(0xFF0C7189);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _sectionTitle('notes'.tr, color, Icons.sticky_note_2_rounded),
+        const SizedBox(height: 8),
+        ...draft.existingNotes.map((note) {
+          return Container(
+            width: double.infinity,
+            margin: const EdgeInsets.only(bottom: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: light ? 0.06 : 0.14),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(
+              note,
+              style: TextStyle(
+                fontSize: 12.5,
+                height: 1.35,
+                color: light ? const Color(0xFF0F172A) : Colors.white,
+              ),
+            ),
+          );
+        }),
+        Container(
+          decoration: BoxDecoration(
+            color: light ? const Color(0xFFF8FAFC) : const Color(0xFF111111),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: light ? const Color(0xFFE2E8F0) : Colors.white12,
+            ),
+          ),
+          child: TextField(
+            key: ValueKey('note-$_slug'),
+            controller: draft.noteController,
+            minLines: 2,
+            maxLines: 4,
+            onChanged: (_) => ctrl.tick.value++,
+            style: TextStyle(
+              fontSize: 13,
+              color: light ? const Color(0xFF0F172A) : Colors.white,
+            ),
+            decoration: InputDecoration(
+              hintText: 'note_hint'.tr,
+              hintStyle: const TextStyle(
+                fontSize: 12.5,
+                color: Color(0xFF94A3B8),
+              ),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 10,
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
