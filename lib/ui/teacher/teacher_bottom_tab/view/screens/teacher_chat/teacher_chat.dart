@@ -12,14 +12,14 @@ import '../../../../../common_screens/chat/view/message_screen.dart';
 import 'controller/teacher_controller.dart';
 
 class TeacherChat extends StatefulWidget {
-  TeacherChat({super.key});
+  const TeacherChat({super.key});
 
   @override
   State<TeacherChat> createState() => _TeacherChatState();
 }
 
 class _TeacherChatState extends State<TeacherChat> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   String searchText = "";
   bool isLight(BuildContext context) =>
       Theme.of(context).brightness == Brightness.light;
@@ -376,7 +376,7 @@ class _TeacherChatState extends State<TeacherChat> {
                                 "type": type,
                               },
                             );
-                          }).toList(),
+                          }),
                         ],
                       );
                     }).toList(),
@@ -613,7 +613,7 @@ class _TeacherChatState extends State<TeacherChat> {
                 const BorderRadius.vertical(top: Radius.circular(28)),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(light ? 0.12 : 0.4),
+                    color: Colors.black.withValues(alpha: light ? 0.12 : 0.4),
                     blurRadius: 40,
                     offset: const Offset(0, -6),
                   ),
@@ -797,7 +797,7 @@ class _TeacherChatState extends State<TeacherChat> {
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         border: Border.all(
-                                            color: color.withOpacity(0.35),
+                                            color: color.withValues(alpha: 0.35),
                                             width: 2),
                                       ),
                                       child: ProfileAvatar(
@@ -894,7 +894,7 @@ class _TeacherChatState extends State<TeacherChat> {
                                       boxShadow: [
                                         BoxShadow(
                                           color:
-                                          primary.withOpacity(0.28),
+                                          primary.withValues(alpha: 0.28),
                                           blurRadius: 8,
                                           offset: const Offset(0, 3),
                                         ),

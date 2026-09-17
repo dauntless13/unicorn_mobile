@@ -1,6 +1,7 @@
 /// success : true
 /// message : "Password reset successfully"
 /// data : ""
+library;
 
 class ResetPasswordResponse {
   ResetPasswordResponse({

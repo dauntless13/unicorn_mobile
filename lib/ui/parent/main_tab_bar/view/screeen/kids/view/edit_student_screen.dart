@@ -534,7 +534,7 @@ class _EditStudentScreenState extends State<EditStudentScreen>
                     border: Border.all(color: _teal, width: 3),
                     boxShadow: [
                       BoxShadow(
-                        color: _teal.withOpacity(0.25),
+                        color: _teal.withValues(alpha: 0.25),
                         blurRadius: 20,
                         spreadRadius: 2,
                       ),
@@ -546,7 +546,7 @@ class _EditStudentScreenState extends State<EditStudentScreen>
                     backgroundColor: light
                         ? const Color(0xFFE8F3F6)
                         : const Color(0xFF1E1E1E),
-                    iconColor: _teal.withOpacity(0.6),
+                    iconColor: _teal.withValues(alpha: 0.6),
                     iconSize: 48,
                   ),
                 ),
@@ -561,13 +561,13 @@ class _EditStudentScreenState extends State<EditStudentScreen>
                       padding: const EdgeInsets.all(7),
                       decoration: BoxDecoration(
                         color: controller.isStudentImageUploading.value
-                            ? _teal.withOpacity(0.45)
+                            ? _teal.withValues(alpha: 0.45)
                             : _teal,
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white, width: 2),
                         boxShadow: [
                           BoxShadow(
-                              color: _teal.withOpacity(0.4), blurRadius: 8)
+                              color: _teal.withValues(alpha: 0.4), blurRadius: 8)
                         ],
                       ),
                       child: Icon(
@@ -618,7 +618,7 @@ class _EditStudentScreenState extends State<EditStudentScreen>
         boxShadow: light
             ? [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 10,
                   offset: const Offset(0, 2),
                 )
@@ -677,7 +677,7 @@ class _EditStudentScreenState extends State<EditStudentScreen>
                 prefixIcon: Icon(
                   Icons.phone_outlined,
                   size: 20,
-                  color: _teal.withOpacity(0.7),
+                  color: _teal.withValues(alpha: 0.7),
                 ),
                 filled: true,
                 fillColor: light ? Colors.white : const Color(0xFF1E1E1E),
@@ -763,7 +763,7 @@ class _EditStudentScreenState extends State<EditStudentScreen>
         ),
         child: Row(
           children: [
-            Icon(Icons.flag_outlined, size: 20, color: _teal.withOpacity(0.7)),
+            Icon(Icons.flag_outlined, size: 20, color: _teal.withValues(alpha: 0.7)),
             const SizedBox(width: 10),
             Expanded(
               child: ValueListenableBuilder<TextEditingValue>(
@@ -822,7 +822,7 @@ class _EditStudentScreenState extends State<EditStudentScreen>
           fontSize: 13,
           color: light ? Colors.grey.shade500 : Colors.grey.shade400,
         ),
-        prefixIcon: Icon(icon, size: 20, color: _teal.withOpacity(0.7)),
+        prefixIcon: Icon(icon, size: 20, color: _teal.withValues(alpha: 0.7)),
         filled: true,
         fillColor: (light ? Colors.white : const Color(0xFF1E1E1E)),
         border: InputBorder.none,
@@ -854,7 +854,7 @@ class _EditStudentScreenState extends State<EditStudentScreen>
           children: [
             Icon(icon,
                 size: 20,
-                color: enabled ? _teal.withOpacity(0.7) : Colors.grey.shade400),
+                color: enabled ? _teal.withValues(alpha: 0.7) : Colors.grey.shade400),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
@@ -902,7 +902,7 @@ class _EditStudentScreenState extends State<EditStudentScreen>
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: _teal.withOpacity(0.7)),
+          Icon(icon, size: 20, color: _teal.withValues(alpha: 0.7)),
           const SizedBox(width: 16),
           Expanded(
             child: Text(
@@ -932,7 +932,7 @@ class _EditStudentScreenState extends State<EditStudentScreen>
             : () => controller.updateStudentDetails(context, widget.slug),
         style: ElevatedButton.styleFrom(
           backgroundColor: _teal,
-          disabledBackgroundColor: _teal.withOpacity(0.5),
+          disabledBackgroundColor: _teal.withValues(alpha: 0.5),
           foregroundColor: Colors.white,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -1090,7 +1090,7 @@ class _EditStudentScreenState extends State<EditStudentScreen>
                   const BorderRadius.vertical(top: Radius.circular(24)),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.12),
+                  color: Colors.black.withValues(alpha: 0.12),
                   blurRadius: 24,
                   offset: const Offset(0, -4),
                 ),
@@ -1171,7 +1171,7 @@ class _EditStudentScreenState extends State<EditStudentScreen>
                                 width: 36,
                                 height: 36,
                                 decoration: BoxDecoration(
-                                  color: _teal.withOpacity(0.08),
+                                  color: _teal.withValues(alpha: 0.08),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Center(

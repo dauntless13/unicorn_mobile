@@ -30,7 +30,7 @@ class AddPostController extends GetxController {
 
   // ================= PICK IMAGE =================
   Future<void> pickImage() async {
-    final List<XFile>? files = await _picker.pickMultiImage();
+    final List<XFile> files = await _picker.pickMultiImage();
 
     if (files != null && files.isNotEmpty) {
       clearMedia();
@@ -136,7 +136,7 @@ class AddPostController extends GetxController {
     String publishTypeLabel,
     String postTypeLabel,
   ) async {
-    if (selectedClass.value == null) {
+    if (selectedClasses.isEmpty) {
       showToast(
         context,
         "Error",
@@ -169,6 +169,16 @@ class AddPostController extends GetxController {
         context,
         "Error",
         "Please select students",
+        type: ToastificationType.error,
+      );
+      return;
+    }
+    if (!publishTypeIsPrivate(publishTypeLabel) &&
+        selectedStudents.any((student) => student.allowPublicMedia == false)) {
+      showToast(
+        context,
+        "Error",
+        "public_media_not_allowed".tr,
         type: ToastificationType.error,
       );
       return;
@@ -260,11 +270,16 @@ class AddPostController extends GetxController {
       }
 
       /// ================== STEP 2: Create Post Request ==================
+      final classSlugs = selectedClasses
+          .map((item) => item.slug ?? "")
+          .where((slug) => slug.isNotEmpty)
+          .toList();
       final addPostRequest = AddPostRequest(
         lang: LanguageController.to.apiLanguage,
         type: getPostType(postTypeLabel),
         // PHOTO / VIDEO / ANNOUNCEMENT
-        classSlug: selectedClass.value?.slug,
+        classSlug: classSlugs.isNotEmpty ? classSlugs.first : null,
+        classSlugs: classSlugs,
         publishType: getPublishType(publishTypeLabel),
         // public / private
         studentSlugs: selectedStudents
@@ -281,7 +296,7 @@ class AddPostController extends GetxController {
       final response = await apiWorker.addPost(
         addPostRequest,
         Get.context,
-        selectedClass.value?.slug ?? "",
+        classSlugs.isNotEmpty ? classSlugs.first : "",
       );
       if (response?.success == true) {
         showToast(
@@ -316,7 +331,7 @@ class AddPostController extends GetxController {
 
   RxBool isClassLoading = false.obs;
   RxList<Class> classList = <Class>[].obs;
-  Rxn<Class> selectedClass = Rxn<Class>();
+  RxList<Class> selectedClasses = <Class>[].obs;
 
   // ================= CLASS =================
   Future<void> fetchClasses(BuildContext context) async {
@@ -337,15 +352,15 @@ class AddPostController extends GetxController {
     }
   }
 
-  void selectClass(Class item) {
-    // If same class, do nothing
-    if (selectedClass.value?.slug == item.slug) return;
-
-    selectedClass.value = item;
-
-    // 🔥 IMPORTANT: clear previous student selection
+  void toggleClass(Class item) {
+    final index = selectedClasses.indexWhere((cls) => cls.slug == item.slug);
+    if (index != -1) {
+      selectedClasses.removeAt(index);
+    } else {
+      selectedClasses.add(item);
+    }
     selectedStudents.clear();
-    studentList.clear(); // optional (recommended)
+    studentList.clear();
   }
 
   RxBool isStudentLoading = false.obs;
@@ -353,7 +368,7 @@ class AddPostController extends GetxController {
   RxList<StudentData> selectedStudents = <StudentData>[].obs;
   TextEditingController searchController = TextEditingController();
   Future<void> fetchStudentsByClass(BuildContext context) async {
-    if (selectedClass.value == null) {
+    if (selectedClasses.isEmpty) {
       showToast(
         context,
         "Error",
@@ -365,27 +380,30 @@ class AddPostController extends GetxController {
 
     try {
       isStudentLoading.value = true;
+      final merged = <String, StudentData>{};
 
-      final response = await apiWorker.listStudentByClassApi(
-        ListStudentByClassRequest(
-            page: 1,
-            limit: 100,
-            lang: LanguageController.to.apiLanguage,
-            search: searchController.text),
-        context,
-        selectedClass.value!.slug ?? "",
-      );
-
-      if (response?.success == true) {
-        studentList.assignAll(response?.data?.students ?? []);
-      } else {
-        showToast(
+      for (final cls in selectedClasses) {
+        final slug = cls.slug ?? "";
+        if (slug.isEmpty) continue;
+        final response = await apiWorker.listStudentByClassApi(
+          ListStudentByClassRequest(
+              page: 1,
+              limit: 100,
+              lang: LanguageController.to.apiLanguage,
+              search: searchController.text),
           context,
-          "Error",
-          response?.message ?? "Failed to load students",
-          type: ToastificationType.error,
+          slug,
         );
+        if (response?.success == true) {
+          for (final student in response?.data?.students ?? []) {
+            final studentSlug = student.slug ?? "";
+            if (studentSlug.isEmpty) continue;
+            merged[studentSlug] = student;
+          }
+        }
       }
+
+      studentList.assignAll(merged.values.toList());
     } catch (e) {
       showToast(
         context,
@@ -410,7 +428,16 @@ class AddPostController extends GetxController {
   //   }
   // }
 
-  void toggleStudent(StudentData student) {
+  void toggleStudent(StudentData student, {bool isPrivate = true}) {
+    if (!isPrivate && student.allowPublicMedia == false) {
+      showToast(
+        Get.context,
+        "Error",
+        "public_media_not_allowed".tr,
+        type: ToastificationType.error,
+      );
+      return;
+    }
     final index = selectedStudents.indexWhere((s) => s.slug == student.slug);
 
     if (index != -1) {

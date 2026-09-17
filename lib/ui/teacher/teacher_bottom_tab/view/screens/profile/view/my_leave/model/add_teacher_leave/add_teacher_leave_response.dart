@@ -1,6 +1,7 @@
 /// success : true
 /// message : "Leave applied successfully"
 /// data : {"id":"f1f05d69-222c-4b84-9bb0-4dade2d74c4e","teacherId":"63d1e5d1-5388-4e47-b05c-56662ac021e6","leaveType":"SICK","startDate":"16-02-2026","endDate":"18-02-2026","totalDays":3,"status":"PENDING","appliedAt":"27-02-2026"}
+library;
 
 class AddTeacherLeaveResponse {
   AddTeacherLeaveResponse({

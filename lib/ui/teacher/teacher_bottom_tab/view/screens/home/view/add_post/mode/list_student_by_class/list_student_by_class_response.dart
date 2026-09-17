@@ -107,6 +107,7 @@ class StudentData {
   String? rollNumber;
   String? checkIn;
   String? checkOut;
+  bool? allowPublicMedia;
 
   StudentData({
     this.firstName,
@@ -117,6 +118,7 @@ class StudentData {
     this.rollNumber,
     this.checkIn,
     this.checkOut,
+    this.allowPublicMedia,
   });
 
   StudentData copyWith({
@@ -128,6 +130,7 @@ class StudentData {
     String? rollNumber,
     String? checkIn,
     String? checkOut,
+    bool? allowPublicMedia,
   }) =>
       StudentData(
         firstName: firstName ?? this.firstName,
@@ -136,6 +139,7 @@ class StudentData {
         id: id ?? this.id,
         slug: slug ?? this.slug,
         rollNumber: rollNumber ?? this.rollNumber,
+        allowPublicMedia: allowPublicMedia ?? this.allowPublicMedia,
       );
 
   factory StudentData.fromJson(Map<String, dynamic> json) => StudentData(
@@ -147,6 +151,7 @@ class StudentData {
         rollNumber: json["rollNumber"],
         checkIn: json["checkIn"],
         checkOut: json["checkOut"],
+        allowPublicMedia: json["allowPublicMedia"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -158,5 +163,6 @@ class StudentData {
         "rollNumber": rollNumber,
         "checkIn": checkIn,
         "checkOut": checkOut,
+        "allowPublicMedia": allowPublicMedia,
       };
 }

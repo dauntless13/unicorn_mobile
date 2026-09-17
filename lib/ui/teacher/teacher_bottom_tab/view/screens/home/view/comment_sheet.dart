@@ -309,7 +309,7 @@ class _CommentSheetState extends State<CommentSheet> {
                     children: [
                       Icon(Icons.chat_bubble_outline,
                           size: 48,
-                          color: _textSecondary.withOpacity(0.4)),
+                          color: _textSecondary.withValues(alpha: 0.4)),
                       const SizedBox(height: 12),
                       MyRegularText(label:
                       'No comments yet'.tr,
@@ -353,7 +353,7 @@ class _CommentSheetState extends State<CommentSheet> {
             Container(
               padding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              color: const Color(0xFF0095F6).withOpacity(0.08),
+              color: const Color(0xFF0095F6).withValues(alpha: 0.08),
               child: Row(
                 children: [
                   const Icon(Icons.edit, size: 14, color: Color(0xFF0095F6)),
@@ -544,7 +544,7 @@ class _CommentTile extends StatelessWidget {
                     padding:
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0095F6).withOpacity(0.12),
+                      color: const Color(0xFF0095F6).withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: const MyRegularText(

@@ -3,15 +3,23 @@ import 'package:get/get.dart';
 
 import '../service/api_service/api_worker.dart';
 import '../service/session/session_helper.dart';
-import '../ui/auth/view/model/login/login_response.dart';
 
 class NurseryModuleController extends GetxController {
   final evaluationEnabledForTeachers = true.obs;
   final evaluationEnabledForParents = true.obs;
+  final chatEnabled = true.obs;
+  final allowTeachersViewPersonalInfo = true.obs;
 
-  void apply({required bool teachers, required bool parents}) {
+  void apply({
+    required bool teachers,
+    required bool parents,
+    bool? chat,
+    bool? personalInfo,
+  }) {
     evaluationEnabledForTeachers.value = teachers;
     evaluationEnabledForParents.value = parents;
+    if (chat != null) chatEnabled.value = chat;
+    if (personalInfo != null) allowTeachersViewPersonalInfo.value = personalInfo;
   }
 
   Future<void> hydrateFromSession() async {
@@ -20,6 +28,8 @@ class NurseryModuleController extends GetxController {
     apply(
       teachers: user?.evaluationEnabledForTeachers ?? true,
       parents: user?.evaluationEnabledForParents ?? true,
+      chat: user?.chatEnabled ?? true,
+      personalInfo: user?.allowTeachersViewPersonalInfo ?? true,
     );
   }
 
@@ -31,21 +41,35 @@ class NurseryModuleController extends GetxController {
           : Get.put(ApiWorker());
       final module = await apiWorker.getEvaluationModule(context);
       if (module == null) return;
-      apply(teachers: module.teachers, parents: module.parents);
-      await _persistToSession(module.teachers, module.parents);
+      apply(
+        teachers: module.teachers,
+        parents: module.parents,
+        chat: module.chatEnabled,
+        personalInfo: module.allowTeachersViewPersonalInfo,
+      );
+      await _persistToSession(module);
     } catch (error) {
       debugPrint('Nursery module load error: $error');
     }
   }
 
-  Future<void> _persistToSession(bool teachers, bool parents) async {
+  Future<void> _persistToSession(
+    ({
+      bool teachers,
+      bool parents,
+      bool chatEnabled,
+      bool allowTeachersViewPersonalInfo,
+    }) module,
+  ) async {
     final session = await SessionHelper().getLoginResponse();
     final user = session?.data?.user;
     if (session == null || user == null) return;
     session.data = session.data?.copyWith(
       user: user.copyWith(
-        evaluationEnabledForTeachers: teachers,
-        evaluationEnabledForParents: parents,
+        evaluationEnabledForTeachers: module.teachers,
+        evaluationEnabledForParents: module.parents,
+        chatEnabled: module.chatEnabled,
+        allowTeachersViewPersonalInfo: module.allowTeachersViewPersonalInfo,
       ),
     );
     await SessionHelper().setLoginResponse(session);
@@ -61,6 +85,12 @@ NurseryModuleController ensureNurseryModuleController() {
 
 bool isTeacherEvaluationEnabled() =>
     ensureNurseryModuleController().evaluationEnabledForTeachers.value;
+
+bool isMobileChatEnabled() =>
+    ensureNurseryModuleController().chatEnabled.value;
+
+bool canTeachersViewPersonalInfo() =>
+    ensureNurseryModuleController().allowTeachersViewPersonalInfo.value;
 
 void leaveIfTeacherEvaluationDisabled() {
   if (!isTeacherEvaluationEnabled()) {

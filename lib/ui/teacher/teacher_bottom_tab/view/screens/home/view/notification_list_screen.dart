@@ -316,13 +316,13 @@ class _NotificationCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: unread
                 ? (light
-                    ? primaryColor.withOpacity(0.08)
-                    : primaryColor.withOpacity(0.18))
+                    ? primaryColor.withValues(alpha: 0.08)
+                    : primaryColor.withValues(alpha: 0.18))
                 : (light ? Colors.white : const Color(0xFF1A1A1A)),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: unread
-                  ? primaryColor.withOpacity(0.35)
+                  ? primaryColor.withValues(alpha: 0.35)
                   : (light ? const Color(0xFFE2E8F0) : Colors.white12),
             ),
           ),
@@ -364,7 +364,7 @@ class _NotificationCard extends StatelessWidget {
                             vertical: 3,
                           ),
                           decoration: BoxDecoration(
-                            color: primaryColor.withOpacity(0.12),
+                            color: primaryColor.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(

@@ -1,6 +1,7 @@
 /// success : true
 /// message : "Story deleted successfully"
 /// data : {"id":"8e084bc1-0157-479c-a470-fbc199a39d7b"}
+library;
 
 class DeleteStoryResponse {
   DeleteStoryResponse({

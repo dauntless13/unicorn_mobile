@@ -1,6 +1,7 @@
 /// success : true
 /// message : "Note added successfully"
 /// data : {"studentName":"Aarav Patel","note":"tomorrow please send the new penil ok"}
+library;
 
 class AddNotesResponse {
   AddNotesResponse({

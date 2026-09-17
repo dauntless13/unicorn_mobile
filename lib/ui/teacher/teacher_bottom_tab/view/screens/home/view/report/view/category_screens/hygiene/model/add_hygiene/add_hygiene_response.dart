@@ -1,6 +1,7 @@
 /// success : true
 /// message : "Hygiene added successfully"
 /// data : {"studentName":"Aarav Patel","studentId":"57e385f0-c052-40a9-b62f-16f5001b9ccb","hygiene":[{"hygieneId":"f03cf4e4-de87-4e72-9d1c-85e242599aeb","studentId":"57e385f0-c052-40a9-b62f-16f5001b9ccb","BATHROOM":{"date":"2026-02-27","time":"02:30 PM","description":"Student took a bath"}}]}
+library;
 
 class AddHygieneResponse {
   AddHygieneResponse({

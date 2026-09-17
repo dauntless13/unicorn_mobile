@@ -1,6 +1,7 @@
 /// success : true
 /// message : "Mood updated successfully"
 /// data : {"name":"Pinal Patel","mood":["HAPPY"]}
+library;
 
 class MoodUpdateResponse {
   MoodUpdateResponse({

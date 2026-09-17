@@ -8,13 +8,13 @@ class GetStudentListByClassResponse {
   GetStudentListByClassResponse.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     message = json['message'];
-    data = json['data'] != null ? new StudentDataByClass.fromJson(json['data']) : null;
+    data = json['data'] != null ? StudentDataByClass.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -33,16 +33,16 @@ class StudentDataByClass {
     if (json['students'] != null) {
       students = <Students>[];
       json['students'].forEach((v) {
-        students!.add(new Students.fromJson(v));
+        students!.add(Students.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['className'] = this.className;
-    if (this.students != null) {
-      data['students'] = this.students!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['className'] = className;
+    if (students != null) {
+      data['students'] = students!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -77,14 +77,14 @@ class Students {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['profileLink'] = this.profileLink;
-    data['rollNumber'] = this.rollNumber;
-    data['studentId'] = this.studentId;
-    data['checkIn'] = this.checkIn;
-    data['checkOut'] = this.checkOut;
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['profileLink'] = profileLink;
+    data['rollNumber'] = rollNumber;
+    data['studentId'] = studentId;
+    data['checkIn'] = checkIn;
+    data['checkOut'] = checkOut;
+    data['status'] = status;
     return data;
   }
 }

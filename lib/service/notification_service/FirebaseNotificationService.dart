@@ -7,6 +7,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../../controller/nursery_module_controller.dart';
 import '../../ui/common_screens/chat/view/message_screen.dart';
 import '../../routes/app_routs.dart';
 import '../../service/session/session_helper.dart';
@@ -267,6 +268,11 @@ class FirebaseNotificationService {
   static Future<void> _navigateTeacher(String type, String? id) async {
     switch (type) {
       case 'CHAT':
+      case 'MESSAGE':
+        if (!isMobileChatEnabled()) {
+          await _openTeacherTab(0);
+          break;
+        }
         await _openTeacherTab(3);
         if (id != null && id.isNotEmpty) {
           await Future.delayed(const Duration(milliseconds: 500));
@@ -281,14 +287,20 @@ class FirebaseNotificationService {
         break;
       case 'REPORT':
       case 'POST':
+      case 'ANNOUNCEMENT':
         await _openTeacherTab(0);
         break;
       case 'EVENT':
       case 'HOLIDAY':
+      case 'BIRTHDAY':
         await _openTeacherTab(1);
         break;
       case 'FEES':
       case 'BILLING':
+        await _openTeacherTab(2);
+        break;
+      case 'STUDENT_STATUS':
+      case 'MEDICAL':
         await _openTeacherTab(2);
         break;
     }
@@ -297,6 +309,11 @@ class FirebaseNotificationService {
   static Future<void> _navigateParent(String type, String? id) async {
     switch (type) {
       case 'CHAT':
+      case 'MESSAGE':
+        if (!isMobileChatEnabled()) {
+          await _openParentTab(0);
+          break;
+        }
         await _openParentTab(3);
         if (id != null && id.isNotEmpty) {
           await Future.delayed(const Duration(milliseconds: 500));
@@ -310,6 +327,7 @@ class FirebaseNotificationService {
         Get.to(() => const StudentLeaveListing());
         break;
       case 'POST':
+      case 'ANNOUNCEMENT':
         await _openParentTab(0);
         break;
       case 'ACTIVITY':
@@ -317,6 +335,13 @@ class FirebaseNotificationService {
         break;
       case 'REPORT':
         await _openParentTab(2, kidsTabIndex: 1, studentSlug: id);
+        break;
+      case 'MEDICAL':
+        await _openParentTab(2, kidsTabIndex: 2, studentSlug: id);
+        break;
+      case 'BIRTHDAY':
+      case 'STUDENT_STATUS':
+        await _openParentTab(2, kidsTabIndex: 3, studentSlug: id);
         break;
       case 'EVENT':
       case 'HOLIDAY':

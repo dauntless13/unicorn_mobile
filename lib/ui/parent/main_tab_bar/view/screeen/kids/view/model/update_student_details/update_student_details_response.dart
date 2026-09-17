@@ -1,6 +1,7 @@
 /// success : true
 /// message : "Student updated successfully"
 /// data : {"student":{"id":"88dbe73c-219d-46ef-a45b-46b9fbf3899d","studentCode":"AD0000020","rollNumber":"0020","firstName":"              Kabir ","lastName":"    Kumar","address":"Ahmedabad, Gujarat, India","medicalInfo":"","zipCode":"380001","gender":"MALE","dateOfBirth":"2026-02-05","joinDate":"2026-02-20","countryId":"f126b559-4e99-46bd-91aa-3a9a34a2ed81","stateId":"6c2d9685-cfb7-4273-8530-984da4711ffd","cityId":"70700e96-c014-4c05-ac08-6dd34f5f29ed","currency":"INR","feeAmount":53,"feeAmountWithCurrency":"INR 53","packageDuration":"THREE_MONTH","hasAllergies":false,"takesMedications":false,"hasMedicalCondition":false,"pickup":false,"medicalDecision":false,"photoUrl":"","slug":"student-kabir-kumar-AD0000020"},"parent":{"id":"1170998a-4a66-49ae-87dd-db02db43c767","firstName":"Anaya ","lastName":"Singh 412","profileLink":"","relationship":"MOTHER","education":"graduation","occupation":"business","countryCode":"+974","phoneNumber":"54655550","email":"anaya@gmail.com"},"emergencyContact":{"id":"10522954-1829-4627-84ed-ace7a2e70417","firstName":"Kiara ","lastName":"Iyer","relationship":"MOTHER","custom_relationship":"","education":"","occupation":"","countryCode":"+974","phoneNumber":"90641255","secondaryPhoneNumber":"","email":"kiara@gmail.com"}}
+library;
 
 class UpdateStudentDetailsResponse {
   UpdateStudentDetailsResponse({

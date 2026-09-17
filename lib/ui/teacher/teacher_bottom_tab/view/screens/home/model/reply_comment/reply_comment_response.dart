@@ -1,6 +1,7 @@
 /// success : true
 /// message : "Comment added successfully"
 /// data : {"replyId":"6a633c0c-15f3-4243-8c97-0a1e7b2e7247","commentId":"63b42874-24ed-4aaa-b3cf-d8a123714160","parentId":"eab69ab5-0161-4635-8aaf-b286724ac712","replyToId":"","firstName":"natasha","lastName":"Pandya","profileLink":"https://api.unicorn-class.com/uploads/1773309738313-966397463.jpg","comment":"wohooo"}
+library;
 
 class ReplyCommentResponse {
   ReplyCommentResponse({

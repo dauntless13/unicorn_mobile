@@ -198,7 +198,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                       //   fontWeight: FontWeight.w500,
                       // ),
                       MyRegularText(
-                        label: '${t?.nurseryName ?? ''}'.trim(),
+                        label: (t?.nurseryName ?? '').trim(),
                         fontSize: 17,
                         fontWeight: FontWeight.w700,
                         color: _textPrimary,

@@ -15,7 +15,7 @@ class AddStoryScreen extends StatefulWidget {
 class _AddStoryScreenState extends State<AddStoryScreen> {
   File? _image;
   final TextEditingController _textController = TextEditingController();
-  bool _showTextField = false;
+  final bool _showTextField = false;
 
   bool isLight(BuildContext context) =>
       Theme.of(context).brightness == Brightness.light;
@@ -140,7 +140,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                             : const Color(0xFF1E1E1E),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.withValues(alpha: 0.2),
                             blurRadius: 20,
                           ),
                         ],

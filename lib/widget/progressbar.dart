@@ -49,11 +49,11 @@ class _ProgressDialog extends StatelessWidget {
             border: Border.all(
               color: isLight
                   ? const Color(0xFFE2E8F0)
-                  : Colors.white.withOpacity(0.08),
+                  : Colors.white.withValues(alpha: 0.08),
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(isLight ? 0.10 : 0.24),
+                color: Colors.black.withValues(alpha: isLight ? 0.10 : 0.24),
                 blurRadius: 28,
                 offset: const Offset(0, 16),
               ),
@@ -68,7 +68,7 @@ class _ProgressDialog extends StatelessWidget {
                 height: 52,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: const Color(0xFF0A6C7D).withOpacity(0.10),
+                  color: const Color(0xFF0A6C7D).withValues(alpha: 0.10),
                 ),
                 alignment: Alignment.center,
                 child: const SizedBox(
@@ -91,7 +91,7 @@ class _ProgressDialog extends StatelessWidget {
                   fontSize: 12.5,
                   color: isLight
                       ? const Color(0xFF64748B)
-                      : Colors.white.withOpacity(0.70),
+                      : Colors.white.withValues(alpha: 0.70),
                 ),
               ),
             ],

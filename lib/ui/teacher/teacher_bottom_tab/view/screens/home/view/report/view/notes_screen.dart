@@ -75,12 +75,12 @@ class _NotesScreenState extends State<NotesScreen> {
                       decoration: BoxDecoration(
                         color: light
                             ? Colors.white
-                            : Colors.white.withOpacity(0.08),
+                            : Colors.white.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
                           color: light
                               ? Colors.grey.shade300
-                              : Colors.white.withOpacity(0.15),
+                              : Colors.white.withValues(alpha: 0.15),
                         ),
                       ),
                       child: Icon(
@@ -145,7 +145,7 @@ class _NotesScreenState extends State<NotesScreen> {
     );
   }
 
-  TextEditingController _notesController = TextEditingController();
+  final TextEditingController _notesController = TextEditingController();
 
   Widget _notesCard(BuildContext context) {
     final light = isLight(context);
@@ -248,7 +248,7 @@ class _NotesScreenState extends State<NotesScreen> {
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black
-                                    .withOpacity(light ? 0.08 : 0.2),
+                                    .withValues(alpha: light ? 0.08 : 0.2),
                                 blurRadius: 6,
                                 offset: const Offset(0, 3),
                               )
@@ -279,7 +279,7 @@ class _NotesScreenState extends State<NotesScreen> {
                             borderRadius: BorderRadius.circular(12),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
+                                color: Colors.black.withValues(alpha: 0.1),
                                 blurRadius: 6,
                                 offset: const Offset(0, 3),
                               )

@@ -721,4 +721,8 @@ const Map<String, String> enUS = {
   'please_complete_one_eval': 'Answer every question for at least one kid first',
   'saved_evaluations': 'Evaluations saved',
   'evaluation_locked': 'This evaluation is approved and cannot be edited',
+  'public_media_not_allowed': 'Public media not allowed',
+  'public_media_warning': 'This student cannot appear in public posts. Private posts are still allowed.',
+  'personal_info_hidden': 'Personal information is hidden by nursery settings',
+  'chat_disabled': 'Chat is currently disabled by the nursery',
 };

@@ -26,7 +26,7 @@ class MyThemeButton extends StatelessWidget {
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: buttonColor,
-          disabledBackgroundColor: buttonColor.withOpacity(0.55),
+          disabledBackgroundColor: buttonColor.withValues(alpha: 0.55),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -40,7 +40,7 @@ class MyThemeButton extends StatelessWidget {
             : Text(
                 title,
                 style: TextStyle(
-                  color: Colors.white.withOpacity(isLoading ? 0.92 : 1),
+                  color: Colors.white.withValues(alpha: isLoading ? 0.92 : 1),
                   fontWeight: FontWeight.w600,
                   fontSize: 16,
                 ),

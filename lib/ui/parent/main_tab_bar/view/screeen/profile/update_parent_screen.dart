@@ -169,7 +169,7 @@ class _EditParentProfileScreenState extends State<EditParentProfileScreen>
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: controller.isImageUploading.value
-                        ? _teal.withOpacity(0.45)
+                        ? _teal.withValues(alpha: 0.45)
                         : _teal,
                     shape: BoxShape.circle,
                   ),

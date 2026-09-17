@@ -28,7 +28,7 @@ class DecorationUtils {
               ? Colors.grey[600]
               : Colors.grey[400],
         ),
-        child: suffixIcon!,
+        child: suffixIcon,
       ),
       filled: true,
       fillColor: isLight
@@ -57,7 +57,7 @@ class DecorationUtils {
         borderSide: BorderSide(
           color: isLight
               ? Colors.grey.shade300
-              : Colors.white.withOpacity(0.12),
+              : Colors.white.withValues(alpha: 0.12),
         ),
       ),
 
@@ -72,7 +72,7 @@ class DecorationUtils {
       disabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(borderRadius),
         borderSide: BorderSide(
-          color: Colors.grey.withOpacity(0.3),
+          color: Colors.grey.withValues(alpha: 0.3),
         ),
       ),
 

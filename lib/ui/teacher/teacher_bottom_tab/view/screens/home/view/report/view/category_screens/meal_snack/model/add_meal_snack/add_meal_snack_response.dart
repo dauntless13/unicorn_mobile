@@ -1,6 +1,7 @@
 /// success : true
 /// message : "Meal added successfully"
 /// data : {"studentName":"Aarav Patel","meals":[{"mealName":"PANEER","date":"2026-02-16","time":"01:30 PM"}]}
+library;
 
 class AddMealSnackResponse {
   AddMealSnackResponse({

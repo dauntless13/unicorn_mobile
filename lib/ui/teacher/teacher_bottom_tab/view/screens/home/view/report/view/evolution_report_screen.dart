@@ -295,7 +295,7 @@ class _EvolutionReportScreenState extends State<EvolutionReportScreen> {
         border: Border.all(
           color: hasDates
               ? (light ? Colors.grey.shade300 : Colors.grey.shade800)
-              : const Color(0xFFEF4444).withOpacity(0.55),
+              : const Color(0xFFEF4444).withValues(alpha: 0.55),
         ),
       ),
       child: Column(
@@ -531,7 +531,7 @@ class _EvolutionReportScreenState extends State<EvolutionReportScreen> {
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: isSelected
-              ? option.color.withOpacity(light ? 0.12 : 0.20)
+              ? option.color.withValues(alpha: light ? 0.12 : 0.20)
               : (light ? Colors.white : const Color(0xFF1A1A1A)),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
@@ -547,7 +547,7 @@ class _EvolutionReportScreenState extends State<EvolutionReportScreen> {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: option.color.withOpacity(0.15),
+                color: option.color.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
               ),
               child: Center(
@@ -704,7 +704,7 @@ class _EvolutionReportScreenState extends State<EvolutionReportScreen> {
                     },
               style: ElevatedButton.styleFrom(
                 backgroundColor: _accent,
-                disabledBackgroundColor: _accent.withOpacity(0.35),
+                disabledBackgroundColor: _accent.withValues(alpha: 0.35),
                 minimumSize: const Size.fromHeight(48),
                 elevation: 0,
                 shape: RoundedRectangleBorder(
@@ -798,7 +798,7 @@ class _EvolutionReportScreenState extends State<EvolutionReportScreen> {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.15),
+                      color: Colors.black.withValues(alpha: 0.15),
                       blurRadius: 20,
                       offset: const Offset(0, 10),
                     ),
@@ -811,7 +811,7 @@ class _EvolutionReportScreenState extends State<EvolutionReportScreen> {
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF0C7189).withOpacity(0.1),
+                        color: const Color(0xFF0C7189).withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(

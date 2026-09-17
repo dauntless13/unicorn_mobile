@@ -90,6 +90,8 @@ class User {
   String? profileLink;
   bool? evaluationEnabledForTeachers;
   bool? evaluationEnabledForParents;
+  bool? chatEnabled;
+  bool? allowTeachersViewPersonalInfo;
 
   User({
     this.id,
@@ -109,6 +111,8 @@ class User {
     this.profileLink,
     this.evaluationEnabledForTeachers,
     this.evaluationEnabledForParents,
+    this.chatEnabled,
+    this.allowTeachersViewPersonalInfo,
   });
 
   User copyWith({
@@ -129,6 +133,8 @@ class User {
     String? profileLink,
     bool? evaluationEnabledForTeachers,
     bool? evaluationEnabledForParents,
+    bool? chatEnabled,
+    bool? allowTeachersViewPersonalInfo,
   }) =>
       User(
         id: id ?? this.id,
@@ -150,6 +156,9 @@ class User {
             evaluationEnabledForTeachers ?? this.evaluationEnabledForTeachers,
         evaluationEnabledForParents:
             evaluationEnabledForParents ?? this.evaluationEnabledForParents,
+        chatEnabled: chatEnabled ?? this.chatEnabled,
+        allowTeachersViewPersonalInfo:
+            allowTeachersViewPersonalInfo ?? this.allowTeachersViewPersonalInfo,
       );
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -170,6 +179,8 @@ class User {
     profileLink: json["profileLink"],
     evaluationEnabledForTeachers: json["evaluationEnabledForTeachers"],
     evaluationEnabledForParents: json["evaluationEnabledForParents"],
+    chatEnabled: json["chatEnabled"],
+    allowTeachersViewPersonalInfo: json["allowTeachersViewPersonalInfo"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -190,5 +201,7 @@ class User {
     "profileLink": profileLink,
     "evaluationEnabledForTeachers": evaluationEnabledForTeachers,
     "evaluationEnabledForParents": evaluationEnabledForParents,
+    "chatEnabled": chatEnabled,
+    "allowTeachersViewPersonalInfo": allowTeachersViewPersonalInfo,
   };
 }

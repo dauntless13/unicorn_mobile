@@ -32,7 +32,7 @@ class MyFormField extends StatelessWidget {
   final double borderRadius;
 
   const MyFormField({
-    Key? key,
+    super.key,
     this.controller,
     this.labelText,
     this.hintText,
@@ -56,7 +56,7 @@ class MyFormField extends StatelessWidget {
     this.enableSuggestions = true,
     this.autocorrect = true,
     this.borderRadius = 12,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

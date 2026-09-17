@@ -17,6 +17,7 @@ import '../model/mood_update/mood_update_request.dart';
 import '../model/report_details_by_student_slug/report_details_by_student_slug_request.dart';
 import '../model/report_details_by_student_slug/report_details_by_student_slug_response.dart';
 import '../model/student_log_draft.dart';
+import '../view/category_screens/activity/model/add_activity/add_activity_request.dart';
 import '../view/category_screens/hygiene/model/add_hygiene/add_hygiene_request.dart';
 import '../view/category_screens/meal_snack/model/add_meal_snack/add_meal_snack_request.dart';
 import '../view/category_screens/nap/model/add_nap/add_nap_request.dart';
@@ -45,6 +46,16 @@ class QuickLogController extends GetxController {
 
   final Map<String, StudentLogDraft> drafts = {};
   int _loadToken = 0;
+
+  static const _activityTypes = [
+    'PE',
+    'CIRCLE_TIME',
+    'MISS_PLAY',
+    'STORY_TIME',
+    'DAILY_ACTIVITY',
+    'ARABIC_AND_ISLAMIC',
+    'OTHERS',
+  ];
 
   static const _moodKeys = [
     'happy',
@@ -252,11 +263,13 @@ class QuickLogController extends GetxController {
     draft.meals.clear();
     draft.hygiene.clear();
     draft.naps.clear();
+    draft.activities.clear();
     draft.moods.clear();
     draft.originalMoods.clear();
     draft.removedMeals.clear();
     draft.removedHygiene.clear();
     draft.removedNaps.clear();
+    draft.removedActivities.clear();
 
     for (final meal in data.mealsAndSnacks ?? []) {
       final mealName = _normalizeMeal(meal.mealName);
@@ -318,6 +331,28 @@ class QuickLogController extends GetxController {
       );
     }
 
+    for (final item in data.activity ?? []) {
+      final type = _normalizeActivity(item.activityType);
+      if (type == null) continue;
+      final start = _cleanTime(item.startTime);
+      final end = _cleanTime(item.endTime);
+      final minutes = (start != null && end != null)
+          ? ReportTimeUtils.minutesBetween(start, end)
+          : 30;
+      draft.activities.add(
+        ActivityEntry(
+          id: item.activityId ?? _newId(),
+          serverId: item.activityId,
+          type: type,
+          minutes: minutes,
+          startTime: start,
+          originalType: type,
+          originalMinutes: minutes,
+          originalStartTime: start,
+        ),
+      );
+    }
+
     draft.hadExistingReport = draft.hasData;
     _changed();
   }
@@ -344,6 +379,22 @@ class QuickLogController extends GetxController {
     final value = (raw ?? '').trim().toUpperCase();
     if (value.contains('POOP') || value.contains('BOWEL')) return 'POOP';
     if (value.contains('URINE') || value.contains('WEE')) return 'URINE';
+    return null;
+  }
+
+  String? _normalizeActivity(String? raw) {
+    final value = (raw ?? '').trim().toUpperCase().replaceAll(' ', '_');
+    if (value.isEmpty) return null;
+    for (final type in _activityTypes) {
+      if (value == type || value.replaceAll('_', '') == type.replaceAll('_', '')) {
+        return type;
+      }
+    }
+    final compact = (raw ?? '').trim().toLowerCase().replaceAll(RegExp(r'[\s_-]'), '');
+    for (final type in _activityTypes) {
+      final label = type.tr.toLowerCase().replaceAll(RegExp(r'[\s_-]'), '');
+      if (compact == label) return type;
+    }
     return null;
   }
 
@@ -486,6 +537,36 @@ class QuickLogController extends GetxController {
     _changed();
   }
 
+  void addActivity(String slug, String type) {
+    draftOf(slug).activities.add(ActivityEntry(id: _newId(), type: type));
+    _changed();
+  }
+
+  void removeActivity(String slug, String id) {
+    final draft = draftOf(slug);
+    final entry = draft.activities.firstWhereOrNull((e) => e.id == id);
+    if (entry == null) return;
+    draft.activities.remove(entry);
+    if (entry.isExisting) {
+      draft.removedActivities.add(entry);
+    }
+    _changed();
+  }
+
+  void setActivityMinutes(String slug, String id, int minutes) {
+    final entry = draftOf(slug).activities.firstWhereOrNull((e) => e.id == id);
+    if (entry == null) return;
+    entry.minutes = minutes;
+    _changed();
+  }
+
+  void setActivityStart(String slug, String id, String? start) {
+    final entry = draftOf(slug).activities.firstWhereOrNull((e) => e.id == id);
+    if (entry == null) return;
+    entry.startTime = start;
+    _changed();
+  }
+
   String mealLabel(String meal) {
     switch (meal) {
       case 'BREAKFAST':
@@ -518,6 +599,8 @@ class QuickLogController extends GetxController {
 
   String durationLabel(int minutes) {
     switch (minutes) {
+      case 15:
+        return 'duration_15'.tr;
       case 30:
         return 'duration_30'.tr;
       case 45:
@@ -530,6 +613,29 @@ class QuickLogController extends GetxController {
         return 'duration_120'.tr;
       default:
         return '$minutes min';
+    }
+  }
+
+  String activityLabel(String type) {
+    final translated = type.tr;
+    return translated == type ? type.replaceAll('_', ' ') : translated;
+  }
+
+  IconData activityIcon(String type) {
+    switch (type) {
+      case 'PE':
+        return Icons.sports_rounded;
+      case 'CIRCLE_TIME':
+        return Icons.groups_rounded;
+      case 'STORY_TIME':
+        return Icons.menu_book_rounded;
+      case 'DAILY_ACTIVITY':
+        return Icons.extension_rounded;
+      case 'ARABIC_AND_ISLAMIC':
+        return Icons.auto_stories_rounded;
+      case 'MISS_PLAY':
+      default:
+        return Icons.toys_rounded;
     }
   }
 
@@ -554,6 +660,16 @@ class QuickLogController extends GetxController {
 
   StudentData? studentBySlug(String slug) {
     return studentList.firstWhereOrNull((s) => s.slug == slug);
+  }
+
+  ({String start, String end}) _activityRange(ActivityEntry activity) {
+    if (activity.startTime == null || activity.startTime!.isEmpty) {
+      return ReportTimeUtils.rangeFromMinutes(activity.minutes);
+    }
+    return (
+      start: activity.startTime!,
+      end: ReportTimeUtils.addMinutesToTime(activity.startTime!, activity.minutes),
+    );
   }
 
   ({String start, String end}) _napRange(NapEntry nap) {
@@ -694,6 +810,48 @@ class QuickLogController extends GetxController {
             return apiWorker.updateNapApi(request, context, nap.serverId!);
           }
           final res = await apiWorker.addNapApi(request, context, draft.slug);
+          return res?.success == true;
+        });
+        success ? ok++ : fail++;
+        saveDone.value += 1;
+      }
+
+      for (final item in List<ActivityEntry>.from(draft.removedActivities)) {
+        final success = await _safe(() async {
+          return apiWorker.deleteActivityApi(
+            context,
+            item.serverId!,
+            lang: lang,
+          );
+        });
+        success ? ok++ : fail++;
+        saveDone.value += 1;
+      }
+
+      for (final item
+          in List<ActivityEntry>.from(draft.activities.where((e) => e.isDirty))) {
+        final success = await _safe(() async {
+          final range = _activityRange(item);
+          final request = AddActivityRequest(
+            activity: item.type,
+            startTime: range.start,
+            endTime: range.end,
+            description: '',
+            date: date,
+            lang: lang,
+          );
+          if (item.isExisting) {
+            return apiWorker.updateActivityApi(
+              request,
+              context,
+              item.serverId!,
+            );
+          }
+          final res = await apiWorker.createActivityApi(
+            request,
+            context,
+            draft.slug,
+          );
           return res?.success == true;
         });
         success ? ok++ : fail++;

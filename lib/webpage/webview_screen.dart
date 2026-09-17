@@ -4,7 +4,7 @@ import 'package:unicorn/core/widget/my_regular_text.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewScreen extends StatefulWidget {
-  WebViewScreen({Key? key}) : super(key: key);
+  const WebViewScreen({super.key});
 
   @override
   State<WebViewScreen> createState() => _WebViewScreenState();

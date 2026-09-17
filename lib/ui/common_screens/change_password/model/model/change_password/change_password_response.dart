@@ -1,6 +1,7 @@
 /// success : true
 /// message : "Password updated successfully"
 /// data : ""
+library;
 
 class ChangePasswordResponse {
   ChangePasswordResponse({

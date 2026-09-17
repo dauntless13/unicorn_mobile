@@ -112,6 +112,8 @@ class Datum {
   String? nurseName;
   String? parentName;
   DateTime? createdAt;
+  List<String>? fileUrls;
+  String? reportPdfLink;
 
   Datum({
     this.id,
@@ -127,6 +129,8 @@ class Datum {
     this.nurseName,
     this.parentName,
     this.createdAt,
+    this.fileUrls,
+    this.reportPdfLink,
   });
 
   Datum copyWith({
@@ -178,6 +182,10 @@ class Datum {
         createdAt: json["createdAt"] == null
             ? null
             : DateTime.parse(json["createdAt"]),
+        fileUrls: json["fileUrls"] == null
+            ? []
+            : List<String>.from(json["fileUrls"].map((x) => x.toString())),
+        reportPdfLink: json["reportPdfLink"],
       );
 
   Map<String, dynamic> toJson() => {

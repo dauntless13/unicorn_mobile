@@ -2,6 +2,7 @@ class AddPostRequest {
   String? lang;
   String? type;
   String? classSlug;
+  List<String>? classSlugs;
   String? publishType;
   List<String>? studentSlugs;
   String? mediaType;
@@ -12,6 +13,7 @@ class AddPostRequest {
     this.lang,
     this.type,
     this.classSlug,
+    this.classSlugs,
     this.publishType,
     this.studentSlugs,
     this.mediaType,
@@ -25,6 +27,7 @@ class AddPostRequest {
       "lang": lang,
       "type": type,
       "classSlug": classSlug,
+      "classSlugs": classSlugs ?? (classSlug == null ? [] : [classSlug]),
       "publishType": publishType,
       "studentSlugs": studentSlugs,
       "mediaType": mediaType,

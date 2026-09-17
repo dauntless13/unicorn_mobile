@@ -1,6 +1,7 @@
 /// success : true
 /// message : "Nursery listed successfully"
 /// data : {"id":"218282d1-e289-416d-947c-4fe120203ca3","role":"PARENT","firstName":"John","lastName":"Smith","countryCode":"+677","phoneNumber":"","address":"","profileLink":"","relationship":"FATHER","education":"fvggb","occupation":""}
+library;
 
 class UpdateParentProfileResponse {
   UpdateParentProfileResponse({

@@ -1,6 +1,7 @@
 /// success : true
 /// message : "activity added successfully"
 /// data : {"studentName":"Aarav Patel","studentId":"57e385f0-c052-40a9-b62f-16f5001b9ccb","activity":[{"activityId":"b9208cec-5442-452f-abdd-82c0f926d1eb","studentId":"57e385f0-c052-40a9-b62f-16f5001b9ccb","YOGA":{"date":"2026-02-27","startTime":"02:30 PM","endTime":"03:15 PM","description":" "}}]}
+library;
 
 class AddActivityResponse {
   AddActivityResponse({

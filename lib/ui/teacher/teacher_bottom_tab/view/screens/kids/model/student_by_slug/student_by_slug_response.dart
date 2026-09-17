@@ -73,6 +73,8 @@ class StudentDataGetBySlug {
   ParentProfile? parentProfile;
   EmergencyContact? emergencyContact;
   MedicalInfo? medicalInfo;
+  bool? personalInfoHidden;
+  bool? allowPublicMedia;
 
   StudentDataGetBySlug({
     this.studentId,
@@ -104,6 +106,8 @@ class StudentDataGetBySlug {
     this.parentProfile,
     this.emergencyContact,
     this.medicalInfo,
+    this.personalInfoHidden,
+    this.allowPublicMedia,
   });
 
   StudentDataGetBySlug copyWith({
@@ -136,6 +140,8 @@ class StudentDataGetBySlug {
     ParentProfile? parentProfile,
     EmergencyContact? emergencyContact,
     MedicalInfo? medicalInfo,
+    bool? personalInfoHidden,
+    bool? allowPublicMedia,
   }) =>
       StudentDataGetBySlug(
         studentId: studentId ?? this.studentId,
@@ -167,6 +173,8 @@ class StudentDataGetBySlug {
         parentProfile: parentProfile ?? this.parentProfile,
         emergencyContact: emergencyContact ?? this.emergencyContact,
         medicalInfo: medicalInfo ?? this.medicalInfo,
+        personalInfoHidden: personalInfoHidden ?? this.personalInfoHidden,
+        allowPublicMedia: allowPublicMedia ?? this.allowPublicMedia,
       );
 
   factory StudentDataGetBySlug.fromJson(Map<String, dynamic> json) => StudentDataGetBySlug(
@@ -199,6 +207,8 @@ class StudentDataGetBySlug {
     parentProfile: json["parentProfile"] == null ? null : ParentProfile.fromJson(json["parentProfile"]),
     emergencyContact: json["emergencyContact"] == null ? null : EmergencyContact.fromJson(json["emergencyContact"]),
     medicalInfo: MedicalInfo.fromDynamic(json["medicalInfo"]),
+    personalInfoHidden: json["personalInfoHidden"] == true,
+    allowPublicMedia: json["allowPublicMedia"],
   );
 
   Map<String, dynamic> toJson() => {

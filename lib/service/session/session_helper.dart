@@ -6,7 +6,7 @@ import '../../ui/auth/view/model/login/login_response.dart';
 class SessionHelper {
   SessionHelper._();
 
-  static SessionHelper _instance = SessionHelper._();
+  static final SessionHelper _instance = SessionHelper._();
 
   factory SessionHelper() {
     return _instance;
@@ -32,7 +32,7 @@ class SessionHelper {
   Future<LoginResponse?> getLoginResponse() async {
     String? response = await SessionManager.getStringValue(spSignupResponse);
 
-    if (response == null || response.isEmpty) {
+    if (response.isEmpty) {
       return null;
     }
 

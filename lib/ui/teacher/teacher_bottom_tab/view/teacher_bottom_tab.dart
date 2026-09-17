@@ -7,6 +7,7 @@ import 'package:unicorn/ui/teacher/teacher_bottom_tab/view/screens/kids/teacher_
 import 'package:unicorn/ui/teacher/teacher_bottom_tab/view/screens/profile/view/teacher_profile_screen.dart';
 import 'package:unicorn/ui/teacher/teacher_bottom_tab/view/screens/teacher_chat/teacher_chat.dart';
 
+import '../../../../controller/nursery_module_controller.dart';
 import '../controller/teacher_bottom_tab_controller.dart';
 
 class TeacherBottomTab extends StatelessWidget {
@@ -58,15 +59,27 @@ class TeacherBottomTab extends StatelessWidget {
 
   Widget _buildBottomBar(BuildContext context) {
     final light = isLight(context);
+    final module = ensureNurseryModuleController();
 
     return Obx(
-      () => Container(
+      () {
+        final chatOn = module.chatEnabled.value;
+        if (!chatOn && controller.selectedIndex.value == 3) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (controller.selectedIndex.value == 3) {
+              controller.changeTab(4);
+            }
+          });
+        }
+        final tabIndexes = chatOn ? const [0, 1, 2, 3, 4] : const [0, 1, 2, 4];
+        final visibleIndex = tabIndexes.indexOf(controller.selectedIndex.value);
+        return Container(
         decoration: BoxDecoration(
           color: light ? Colors.white : const Color(0xFF1E1E1E),
           boxShadow: [
             if (light)
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 10,
                 offset: const Offset(0, -2),
               ),
@@ -83,8 +96,8 @@ class TeacherBottomTab extends StatelessWidget {
           ),
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
-            currentIndex: controller.selectedIndex.value,
-            onTap: controller.changeTab,
+            currentIndex: visibleIndex < 0 ? 0 : visibleIndex,
+            onTap: (index) => controller.changeTab(tabIndexes[index]),
             backgroundColor: light ? Colors.white : const Color(0xFF1E1E1E),
             elevation: 0,
             selectedItemColor: const Color(0xFF008B8B),
@@ -109,11 +122,12 @@ class TeacherBottomTab extends StatelessWidget {
                 icon: 'assets/svg/kids.svg',
                 label: 'tab_kids'.tr,
               ),
-              _navItem(
-                context,
-                icon: 'assets/svg/chat.svg',
-                label: 'tab_chat'.tr,
-              ),
+              if (chatOn)
+                _navItem(
+                  context,
+                  icon: 'assets/svg/chat.svg',
+                  label: 'tab_chat'.tr,
+                ),
               _navItem(
                 context,
                 icon: 'assets/svg/settings.svg',
@@ -122,7 +136,8 @@ class TeacherBottomTab extends StatelessWidget {
             ],
           ),
         ),
-      ),
+      );
+      },
     );
   }
   // Widget _buildBottomBar(BuildContext context) {

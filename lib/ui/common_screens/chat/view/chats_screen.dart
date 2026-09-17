@@ -8,14 +8,14 @@ import '../../../../service/session/session_helper.dart';
 import 'message_screen.dart';
 
 class ParentChatScreen extends StatefulWidget {
-  ParentChatScreen({super.key});
+  const ParentChatScreen({super.key});
 
   @override
   State<ParentChatScreen> createState() => _ParentChatScreenState();
 }
 
 class _ParentChatScreenState extends State<ParentChatScreen> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   String searchText = "";
   bool isLight(BuildContext context) =>
       Theme.of(context).brightness == Brightness.light;
@@ -297,7 +297,7 @@ class _ParentChatScreenState extends State<ParentChatScreen> {
                                 "type": type,
                               },
                             );
-                          }).toList(),
+                          }),
                         ],
                       );
                     }).toList(),
@@ -471,7 +471,7 @@ class _ParentChatScreenState extends State<ParentChatScreen> {
                       const SizedBox(height: 6),
                       Row(
                         children: [
-                          _buildTickIcon(chat, parentId!),
+                          _buildTickIcon(chat, parentId),
                           Expanded(
                             child: Text(
                               chat['message'] ?? "",

@@ -120,12 +120,12 @@ class _ReportDetailsScreenState extends State<ReportDetailsScreen> {
                       decoration: BoxDecoration(
                         color: light
                             ? Colors.white
-                            : Colors.white.withOpacity(0.08),
+                            : Colors.white.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
                           color: light
                               ? Colors.grey.shade300
-                              : Colors.white.withOpacity(0.15),
+                              : Colors.white.withValues(alpha: 0.15),
                         ),
                       ),
                       child: Row(
@@ -538,7 +538,7 @@ class _ReportDetailsScreenState extends State<ReportDetailsScreen> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: isSelected
-                              ? const Color(0xFF6C63FF).withOpacity(.15)
+                              ? const Color(0xFF6C63FF).withValues(alpha: .15)
                               : const Color(0xFFE3E7F0),
                           border: isSelected
                               ? Border.all(

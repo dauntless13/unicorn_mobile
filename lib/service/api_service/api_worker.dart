@@ -1049,7 +1049,12 @@ class ApiWorker with ApiConstant {
     } finally {}
   }
 
-  Future<({bool teachers, bool parents})?> getEvaluationModule(context) async {
+  Future<({
+    bool teachers,
+    bool parents,
+    bool chatEnabled,
+    bool allowTeachersViewPersonalInfo,
+  })?> getEvaluationModule(context) async {
     try {
       final loginResponse = await SessionHelper().getLoginResponse();
       final token = loginResponse?.data?.token;
@@ -1073,6 +1078,9 @@ class ApiWorker with ApiConstant {
       return (
         teachers: data['evaluationEnabledForTeachers'] != false,
         parents: data['evaluationEnabledForParents'] != false,
+        chatEnabled: data['chatEnabled'] != false,
+        allowTeachersViewPersonalInfo:
+            data['allowTeachersViewPersonalInfo'] != false,
       );
     } on DioException catch (error) {
       throw DioExceptionHandler.fromDioError(error, context);
@@ -1408,7 +1416,7 @@ class ApiWorker with ApiConstant {
 
       final response = await dio.postbycustom(
         context,
-        '${ApiConstant.postListUrl}',
+        ApiConstant.postListUrl,
         data: request.toJson(),
         options: Options(
           headers: {
@@ -1577,7 +1585,7 @@ class ApiWorker with ApiConstant {
 
       final response = await dio.postbycustom(
         context,
-        '${ApiConstant.storyListUrl}',
+        ApiConstant.storyListUrl,
         data: request.toJson(),
         options: Options(
           headers: {
@@ -1611,7 +1619,7 @@ class ApiWorker with ApiConstant {
 
       final response = await dio.postbycustom(
         context,
-        '${ApiConstant.addStoryUrl}',
+        ApiConstant.addStoryUrl,
         data: request.toJson(),
         options: Options(
           headers: {
@@ -1774,7 +1782,7 @@ class ApiWorker with ApiConstant {
 
       final response = await dio.postbycustom(
         context,
-        '${ApiConstant.teacherListUrl}',
+        ApiConstant.teacherListUrl,
         data: request.toJson(),
         options: Options(
           headers: {
@@ -1804,7 +1812,7 @@ class ApiWorker with ApiConstant {
       print('Token ::: $token');
       final response = await dio.postbycustom(
         context,
-        '${ApiConstant.forgotPasswordUrl}',
+        ApiConstant.forgotPasswordUrl,
         data: request.toJson(),
       );
 
@@ -1826,7 +1834,7 @@ class ApiWorker with ApiConstant {
 
       final response = await dio.postbycustom(
         context,
-        '${ApiConstant.verifyOtpUrl}',
+        ApiConstant.verifyOtpUrl,
         data: request.toJson(),
       );
 
@@ -1883,7 +1891,7 @@ class ApiWorker with ApiConstant {
 
       final response = await dio.postbycustom(
         context,
-        '${ApiConstant.parentListingUrl}',
+        ApiConstant.parentListingUrl,
         data: request.toJson(),
         options: Options(
           headers: {
@@ -1917,7 +1925,7 @@ class ApiWorker with ApiConstant {
 
       final response = await dio.postbycustom(
         context,
-        '${ApiConstant.createChatUrl}',
+        ApiConstant.createChatUrl,
         data: request.toJson(),
         options: Options(
           headers: {
@@ -1951,7 +1959,7 @@ class ApiWorker with ApiConstant {
 
       final response = await dio.postbycustom(
         context,
-        '${ApiConstant.teacherGroupUserList}',
+        ApiConstant.teacherGroupUserList,
         data: request.toJson(),
         options: Options(
           headers: {
@@ -1985,7 +1993,7 @@ class ApiWorker with ApiConstant {
 
       final response = await dio.postbycustom(
         context,
-        '${ApiConstant.parentGroupUserList}',
+        ApiConstant.parentGroupUserList,
         data: request.toJson(),
         options: Options(
           headers: {
@@ -2148,7 +2156,7 @@ class ApiWorker with ApiConstant {
 
       final response = await dio.postbycustom(
         context,
-        '${ApiConstant.notificationListApi}',
+        ApiConstant.notificationListApi,
         data: {
           "lang": LanguageController.to.apiLanguage,
           "page": page,
@@ -2443,6 +2451,23 @@ class ApiWorker with ApiConstant {
     return _postReportSuccess(
       context,
       '${ApiConstant.deleteHygieneUrl}$hygieneId',
+      {'lang': lang ?? LanguageController.to.apiLanguage},
+    );
+  }
+
+  Future<bool> updateActivityApi(
+      AddActivityRequest request, context, String activityId) async {
+    return _postReportSuccess(
+      context,
+      '${ApiConstant.updateActivityUrl}$activityId',
+      request.toJson(),
+    );
+  }
+
+  Future<bool> deleteActivityApi(context, String activityId, {String? lang}) async {
+    return _postReportSuccess(
+      context,
+      '${ApiConstant.deleteActivityUrl}$activityId',
       {'lang': lang ?? LanguageController.to.apiLanguage},
     );
   }

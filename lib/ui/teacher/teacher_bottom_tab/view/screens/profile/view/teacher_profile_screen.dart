@@ -16,7 +16,7 @@ import '../controller/teacher_profile_controller.dart';
 import 'my_leave/my_leave_list.dart';
 
 class TeacherProfileScreen extends StatefulWidget {
-  TeacherProfileScreen({super.key});
+  const TeacherProfileScreen({super.key});
 
   @override
   State<TeacherProfileScreen> createState() => _TeacherProfileScreenState();
@@ -493,7 +493,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
                 Get.offAll(() => LoginScreen());
               },
               style: TextButton.styleFrom(
-                backgroundColor: Colors.red.withOpacity(0.1),
+                backgroundColor: Colors.red.withValues(alpha: 0.1),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -525,7 +525,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
       height: 36,
       decoration: BoxDecoration(
         color: danger
-            ? Colors.red.withOpacity(0.1)
+            ? Colors.red.withValues(alpha: 0.1)
             : light
                 ? const Color(0xFFE8F3F6)
                 : const Color(0xFF2A2A2A),

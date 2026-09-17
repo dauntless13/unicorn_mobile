@@ -514,7 +514,7 @@ class _TeacherCalendarScreenState extends State<TeacherCalendarScreen> {
                       boxShadow: light
                           ? [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: Colors.black.withValues(alpha: 0.05),
                           blurRadius: 10,
                           offset: const Offset(0, 4),
                         )
@@ -809,7 +809,7 @@ class _TeacherCalendarScreenState extends State<TeacherCalendarScreen> {
       int day, bool isCurrentMonth, Map<int, List<Color>> dots) {
     final light = isLight(context);
     final disabledTextColor =
-        (light ? Colors.black87 : Colors.white).withOpacity(0.28);
+        (light ? Colors.black87 : Colors.white).withValues(alpha: 0.28);
 
     final isSelected = isCurrentMonth &&
         day == selectedDate.day &&
@@ -917,7 +917,7 @@ class _TeacherCalendarScreenState extends State<TeacherCalendarScreen> {
         boxShadow: light
             ? [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 6,
             offset: const Offset(0, 2),
           )
@@ -987,7 +987,7 @@ class _TeacherCalendarScreenState extends State<TeacherCalendarScreen> {
                   padding:
                   const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.12),
+                    color: Colors.grey.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: MyRegularText(
@@ -1009,7 +1009,7 @@ class _TeacherCalendarScreenState extends State<TeacherCalendarScreen> {
 
     showDialog(
       context: context,
-      barrierColor: Colors.black.withOpacity(0.45),
+      barrierColor: Colors.black.withValues(alpha: 0.45),
       builder: (context) {
         final light = isLight(context);
         return Dialog(
@@ -1039,7 +1039,7 @@ class _TeacherCalendarScreenState extends State<TeacherCalendarScreen> {
                           width: 46,
                           height: 46,
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
+                            color: Colors.white.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(14),
                           ),
                           child: const Icon(
@@ -1054,7 +1054,7 @@ class _TeacherCalendarScreenState extends State<TeacherCalendarScreen> {
                             width: 28,
                             height: 28,
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.2),
+                              color: Colors.white.withValues(alpha: 0.2),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(
@@ -1093,7 +1093,7 @@ class _TeacherCalendarScreenState extends State<TeacherCalendarScreen> {
                             width: 6,
                             height: 6,
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.85),
+                              color: Colors.white.withValues(alpha: 0.85),
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -1102,7 +1102,7 @@ class _TeacherCalendarScreenState extends State<TeacherCalendarScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 4),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.18),
+                              color: Colors.white.withValues(alpha: 0.18),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
@@ -1167,7 +1167,7 @@ class _TeacherCalendarScreenState extends State<TeacherCalendarScreen> {
                 child: TextButton(
                   onPressed: () => Navigator.pop(context),
                   style: TextButton.styleFrom(
-                    backgroundColor: color.withOpacity(0.1),
+                    backgroundColor: color.withValues(alpha: 0.1),
                     foregroundColor: color,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
@@ -1210,7 +1210,7 @@ class _TeacherCalendarScreenState extends State<TeacherCalendarScreen> {
                 width: 34,
                 height: 34,
                 decoration: BoxDecoration(
-                  color: iconColor.withOpacity(0.08),
+                  color: iconColor.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(icon, size: 16, color: iconColor),
@@ -1255,7 +1255,7 @@ class _TeacherCalendarScreenState extends State<TeacherCalendarScreen> {
             thickness: 0.5,
             color: light
                 ? Colors.grey.shade100
-                : Colors.white.withOpacity(0.06),
+                : Colors.white.withValues(alpha: 0.06),
           ),
       ],
     );

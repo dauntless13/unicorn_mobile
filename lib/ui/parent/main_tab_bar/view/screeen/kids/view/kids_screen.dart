@@ -6,12 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:permission_handler/permission_handler.dart';
 import 'package:printing/printing.dart';
 import 'package:toastification/toastification.dart';
+import 'package:unicorn/core/utils/android_media_access.dart';
 import 'package:unicorn/core/widget/my_regular_text.dart';
 import 'package:unicorn/core/widget/profile_avatar.dart';
 import 'package:unicorn/service/session/session_helper.dart';
@@ -78,10 +77,10 @@ class _KidsScreenState extends State<KidsScreen>
       isLight(context) ? Colors.grey.shade600 : Colors.grey.shade400;
 
   Color borderClr(BuildContext context) =>
-      isLight(context) ? Colors.grey.shade300 : Colors.white.withOpacity(0.12);
+      isLight(context) ? Colors.grey.shade300 : Colors.white.withValues(alpha: 0.12);
 
   Color dividerClr(BuildContext context) =>
-      isLight(context) ? Colors.grey.shade200 : Colors.white.withOpacity(0.08);
+      isLight(context) ? Colors.grey.shade200 : Colors.white.withValues(alpha: 0.08);
 
   final KidsController controller = Get.put(KidsController());
   final DateTime _minDate = DateTime(2020, 1, 1);
@@ -529,13 +528,13 @@ class _KidsScreenState extends State<KidsScreen>
       final hasMeal = report?.mealsAndSnacks?.isNotEmpty == true;
       final hasHygiene = report?.hygiene?.isNotEmpty == true;
       final hasNote = report?.note?.isNotEmpty == true;
-      final hasAnyActivityData = hasAttendanceData ||
-          hasMood ||
+      final hasLogContent = hasMood ||
           hasActivity ||
           hasNap ||
           hasMeal ||
           hasHygiene ||
           hasNote;
+      final hasAnyActivityData = hasAttendanceData || hasLogContent;
 
       return SingleChildScrollView(
         child: Column(
@@ -550,7 +549,7 @@ class _KidsScreenState extends State<KidsScreen>
               const SizedBox(height: 24),
               Center(child: EmptyState())
             ] else ...[
-              _buildAttendanceCard(),
+              if (hasAttendanceData) _buildAttendanceCard(),
               if (hasMood) ...[
                 const SizedBox(height: 16),
                 Divider(color: dividerClr(context), height: 1),
@@ -587,8 +586,10 @@ class _KidsScreenState extends State<KidsScreen>
                 const SizedBox(height: 16),
                 _buildNoteSection(report),
               ],
-              const SizedBox(height: 24),
-              _buildDownloadButton(),
+              if (hasLogContent) ...[
+                const SizedBox(height: 24),
+                _buildDownloadButton(),
+              ],
             ],
             const SizedBox(height: 24),
           ],
@@ -1262,16 +1263,16 @@ class _KidsScreenState extends State<KidsScreen>
     final pw.Font baseFont = await PdfGoogleFonts.notoNaskhArabicRegular();
     final pw.Font boldFont = await PdfGoogleFonts.notoNaskhArabicBold();
     final theme = pw.ThemeData.withFont(base: baseFont, bold: boldFont);
-    String _safe(String? v) =>
+    String safe(String? v) =>
         (v == null || v.trim().isEmpty) ? 'No Data'.tr : v;
-    List<T> _maybeReverse<T>(List<T> list) =>
+    List<T> maybeReverse<T>(List<T> list) =>
         isRtl ? list.reversed.toList() : list;
-    String _formatHygienePdf(String value) =>
+    String formatHygienePdf(String value) =>
         ReportDisplayUtils.hygieneLabel(value);
-    String _formatActivityPdf(String value) =>
+    String formatActivityPdf(String value) =>
         ReportDisplayUtils.activityLabel(value);
-    String _formatMoodPdf(String value) => ReportDisplayUtils.moodLabel(value);
-    pw.Text _pdfText(String text, {pw.TextStyle? style}) {
+    String formatMoodPdf(String value) => ReportDisplayUtils.moodLabel(value);
+    pw.Text pdfText(String text, {pw.TextStyle? style}) {
       return pw.Text(
         text,
         style: style,
@@ -1300,7 +1301,7 @@ class _KidsScreenState extends State<KidsScreen>
       return pw.Padding(
         padding: const pw.EdgeInsets.symmetric(vertical: 2),
         child: pw.Row(
-          children: _maybeReverse([
+          children: maybeReverse([
             pw.Expanded(
               flex: 2,
               child: pw.Text(
@@ -1327,8 +1328,8 @@ class _KidsScreenState extends State<KidsScreen>
 
     pw.Widget buildTable(List<List<String>> data, List<String> headers) {
       return pw.TableHelper.fromTextArray(
-        headers: _maybeReverse(headers),
-        data: data.map(_maybeReverse).toList(),
+        headers: maybeReverse(headers),
+        data: data.map(maybeReverse).toList(),
         headerStyle: pw.TextStyle(
           fontWeight: pw.FontWeight.bold,
           color: PdfColors.white,
@@ -1378,8 +1379,8 @@ class _KidsScreenState extends State<KidsScreen>
                     DateFormat('dd-MMM-yyyy').format(_selectedDate)),
                 infoRow('Name'.tr,
                     "${student.firstName ?? ''} ${student.lastName ?? ''}"),
-                infoRow('roll_no'.tr, _safe(student.rollNo)),
-                infoRow('Class'.tr, _safe(student.className)),
+                infoRow('roll_no'.tr, safe(student.rollNo)),
+                infoRow('Class'.tr, safe(student.className)),
               ],
             ),
           ),
@@ -1399,9 +1400,9 @@ class _KidsScreenState extends State<KidsScreen>
           /// MOOD
           if (report.todaysMood?.mood?.isNotEmpty == true) ...[
             sectionTitle('mood'.tr),
-            _pdfText(
+            pdfText(
               report.todaysMood!.mood!
-                  .map(_formatMoodPdf)
+                  .map(formatMoodPdf)
                   .join(isRtl ? '، ' : ', '),
             ),
           ],
@@ -1412,10 +1413,10 @@ class _KidsScreenState extends State<KidsScreen>
             buildTable(
               report.activity!
                   .map((a) => [
-                        _formatActivityPdf(_safe(a.activityType)),
-                        _safe(a.startTime),
-                        _safe(a.endTime),
-                        _safe(a.description),
+                        formatActivityPdf(safe(a.activityType)),
+                        safe(a.startTime),
+                        safe(a.endTime),
+                        safe(a.description),
                       ])
                   .toList(),
               ['type'.tr, 'start_time'.tr, 'end_time'.tr, 'description'.tr],
@@ -1428,8 +1429,8 @@ class _KidsScreenState extends State<KidsScreen>
             buildTable(
               report.nap!
                   .map((n) => [
-                        _safe(n.startTime),
-                        _safe(n.endTime),
+                        safe(n.startTime),
+                        safe(n.endTime),
                       ])
                   .toList(),
               ['start_time'.tr, 'end_time'.tr],
@@ -1446,7 +1447,7 @@ class _KidsScreenState extends State<KidsScreen>
                           m.mealName,
                           portion: m.portion,
                         ),
-                        _safe(m.time),
+                        safe(m.time),
                       ])
                   .toList(),
               ['meal'.tr, 'time'.tr],
@@ -1459,8 +1460,8 @@ class _KidsScreenState extends State<KidsScreen>
             buildTable(
               report.hygiene!
                   .map((h) => [
-                        _formatHygienePdf(_safe(h.hygieneType ?? h.description)),
-                        _safe(h.time),
+                        formatHygienePdf(safe(h.hygieneType ?? h.description)),
+                        safe(h.time),
                       ])
                   .toList(),
               ['type'.tr, 'time'.tr],
@@ -1474,7 +1475,7 @@ class _KidsScreenState extends State<KidsScreen>
               (n) => pw.Padding(
                 padding: const pw.EdgeInsets.only(bottom: 4),
                 child: pw.Bullet(
-                  text: _safe(n.content),
+                  text: safe(n.content),
                 ),
               ),
             ),
@@ -1608,7 +1609,7 @@ class _KidsScreenState extends State<KidsScreen>
             height: 50,
             decoration: BoxDecoration(
               color: _showEvaluationDateFilter
-                  ? primaryColor.withOpacity(light ? 0.10 : 0.20)
+                  ? primaryColor.withValues(alpha: light ? 0.10 : 0.20)
                   : (light ? Colors.white : const Color(0xFF1A1A1A)),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
@@ -1863,7 +1864,7 @@ class _KidsScreenState extends State<KidsScreen>
             height: 50,
             decoration: BoxDecoration(
               color: _showMedicalDateFilter
-                  ? primaryColor.withOpacity(light ? 0.10 : 0.20)
+                  ? primaryColor.withValues(alpha: light ? 0.10 : 0.20)
                   : (light ? Colors.white : const Color(0xFF1A1A1A)),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
@@ -2000,7 +2001,7 @@ class _KidsScreenState extends State<KidsScreen>
         boxShadow: light
             ? [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.03),
+                  color: Colors.black.withValues(alpha: 0.03),
                   blurRadius: 12,
                   offset: const Offset(0, 6),
                 ),
@@ -2058,7 +2059,41 @@ class _KidsScreenState extends State<KidsScreen>
               report.reportText,
               stacked: true,
             ),
+          if ((report.fileUrls ?? []).isNotEmpty ||
+              (report.reportPdfLink ?? '').isNotEmpty) ...[
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                if ((report.reportPdfLink ?? '').isNotEmpty)
+                  _medicalFileButton(
+                    url: report.reportPdfLink!,
+                    label: 'view_file'.tr,
+                  ),
+                ...((report.fileUrls ?? []).asMap().entries.map(
+                      (entry) => _medicalFileButton(
+                        url: entry.value,
+                        label: '${'download_file'.tr} ${entry.key + 1}',
+                      ),
+                    )),
+              ],
+            ),
+          ],
         ],
+      ),
+    );
+  }
+
+  Widget _medicalFileButton({required String url, required String label}) {
+    return OutlinedButton.icon(
+      onPressed: () => openDownloadableMedia(url: url, title: label),
+      icon: const Icon(Icons.attach_file, size: 16),
+      label: Text(label),
+      style: OutlinedButton.styleFrom(
+        foregroundColor: primaryColor,
+        side: const BorderSide(color: primaryColor),
+        visualDensity: VisualDensity.compact,
       ),
     );
   }
@@ -2129,7 +2164,7 @@ class _KidsScreenState extends State<KidsScreen>
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
-                  color: primaryColor.withOpacity(light ? 0.10 : 0.20),
+                  color: primaryColor.withValues(alpha: light ? 0.10 : 0.20),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -2436,37 +2471,8 @@ class _KidsScreenState extends State<KidsScreen>
     }
   }
 
-  Future<Directory> _resolveDownloadDirectory() async {
-    if (Platform.isAndroid) {
-      await _requestAndroidStoragePermission();
-
-      final downloadDir = Directory('/storage/emulated/0/Download');
-      if (await downloadDir.exists()) {
-        return downloadDir;
-      }
-
-      final externalDir = await getExternalStorageDirectory();
-      if (externalDir != null) {
-        return externalDir;
-      }
-    }
-
-    if (Platform.isIOS) {
-      return getApplicationDocumentsDirectory();
-    }
-
-    return getTemporaryDirectory();
-  }
-
-  Future<void> _requestAndroidStoragePermission() async {
-    final storageStatus = await Permission.storage.request();
-    if (storageStatus.isGranted) return;
-
-    final photosStatus = await Permission.photos.request();
-    if (photosStatus.isGranted || photosStatus.isLimited) return;
-
-    final videosStatus = await Permission.videos.request();
-    if (videosStatus.isGranted || videosStatus.isLimited) return;
+  Future<Directory> _resolveDownloadDirectory() {
+    return AppDownloadDirectory.resolve();
   }
 
   Future<File> _buildUniqueFile(Directory directory, String fileName) async {
@@ -2575,7 +2581,7 @@ class _KidsScreenState extends State<KidsScreen>
         boxShadow: [
           if (isLight(context))
             BoxShadow(
-              color: Colors.black.withOpacity(0.03),
+              color: Colors.black.withValues(alpha: 0.03),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -2587,7 +2593,7 @@ class _KidsScreenState extends State<KidsScreen>
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: accent.withOpacity(0.12),
+              color: accent.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(_documentIcon(fileName), color: accent, size: 24),
@@ -2929,7 +2935,7 @@ class _KidsScreenState extends State<KidsScreen>
             else
               ...fees.map((fee) {
                 return _buildFeeItem(fee);
-              }).toList(),
+              }),
           ],
         ),
       );
@@ -2963,19 +2969,19 @@ class _KidsScreenState extends State<KidsScreen>
         break;
 
       case 'PENDING':
-        bgColor = Colors.orange.withOpacity(0.1);
+        bgColor = Colors.orange.withValues(alpha: 0.1);
         textColor = Colors.orange;
         label = 'pending'.tr;
         break;
 
       case 'REJECTED':
-        bgColor = Colors.red.withOpacity(0.1);
+        bgColor = Colors.red.withValues(alpha: 0.1);
         textColor = Colors.red;
         label = 'rejected'.tr;
         break;
 
       default:
-        bgColor = Colors.grey.withOpacity(0.1);
+        bgColor = Colors.grey.withValues(alpha: 0.1);
         textColor = Colors.grey;
         label = status;
     }

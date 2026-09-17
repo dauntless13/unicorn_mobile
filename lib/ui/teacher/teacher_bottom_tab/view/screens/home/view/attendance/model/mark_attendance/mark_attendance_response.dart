@@ -1,6 +1,7 @@
 /// success : true
 /// message : "Check-in successful"
 /// data : ""
+library;
 
 class MarkAttendanceResponse {
   MarkAttendanceResponse({

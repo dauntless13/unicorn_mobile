@@ -1,6 +1,7 @@
 /// success : true
 /// message : "OTP generated successfully"
 /// data : {"otp":"909652","message":"OTP sent to email"}
+library;
 
 class ForgotPasswordResponse {
   ForgotPasswordResponse({

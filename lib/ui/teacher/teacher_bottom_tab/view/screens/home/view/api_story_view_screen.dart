@@ -381,7 +381,7 @@ class _ApiStoryViewScreenState extends State<ApiStoryViewScreen>
                   child: LinearProgressIndicator(
                     value: progress,
                     minHeight: 3,
-                    backgroundColor: Colors.white.withOpacity(0.3),
+                    backgroundColor: Colors.white.withValues(alpha: 0.3),
                     valueColor:
                     const AlwaysStoppedAnimation<Color>(Colors.white),
                   ),
@@ -404,8 +404,8 @@ class _ApiStoryViewScreenState extends State<ApiStoryViewScreen>
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.black.withOpacity(0.75),
-            Colors.black.withOpacity(0.4),
+            Colors.black.withValues(alpha: 0.75),
+            Colors.black.withValues(alpha: 0.4),
             Colors.transparent,
           ],
           stops: const [0.0, 0.5, 1.0],
@@ -545,8 +545,8 @@ class _ApiStoryViewScreenState extends State<ApiStoryViewScreen>
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
           colors: [
-            Colors.black.withOpacity(0.75),
-            Colors.black.withOpacity(0.3),
+            Colors.black.withValues(alpha: 0.75),
+            Colors.black.withValues(alpha: 0.3),
             Colors.transparent,
           ],
           stops: const [0.0, 0.6, 1.0],
@@ -743,9 +743,9 @@ class _ApiStoryViewScreenState extends State<ApiStoryViewScreen>
       width: 46,
       height: 46,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
+        color: Colors.white.withValues(alpha: 0.2),
         shape: BoxShape.circle,
-        border: Border.all(color: Colors.white.withOpacity(0.3), width: 1.5),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 1.5),
       ),
       child: Center(child: child),
     );
@@ -769,7 +769,7 @@ class _ApiStoryViewScreenState extends State<ApiStoryViewScreen>
             begin: Alignment.bottomCenter,
             end: Alignment.topCenter,
             colors: [
-              Colors.black.withOpacity(0.6),
+              Colors.black.withValues(alpha: 0.6),
               Colors.transparent,
             ],
           ),

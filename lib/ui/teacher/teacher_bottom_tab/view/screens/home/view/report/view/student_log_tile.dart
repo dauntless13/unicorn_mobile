@@ -103,6 +103,11 @@ class StudentLogTile extends StatelessWidget {
                       const Color(0xFFF97316),
                     ),
                     _countBadge(
+                      Icons.sports_esports_rounded,
+                      draft.activityCount,
+                      const Color(0xFF10B981),
+                    ),
+                    _countBadge(
                       Icons.emoji_emotions_rounded,
                       draft.moodCount,
                       const Color(0xFFEC4899),
@@ -135,6 +140,8 @@ class StudentLogTile extends StatelessWidget {
                     const Divider(height: 1),
                     const SizedBox(height: 10),
                     _foodSection(context, light, draft),
+                    const SizedBox(height: 12),
+                    _playSection(context, light, draft),
                     const SizedBox(height: 12),
                     _moodSection(light, draft),
                     const SizedBox(height: 12),
@@ -288,6 +295,88 @@ class StudentLogTile extends StatelessWidget {
           );
         }).toList(),
       ),
+    );
+  }
+
+  Widget _playSection(BuildContext context, bool light, StudentLogDraft draft) {
+    const color = Color(0xFF10B981);
+    const types = [
+      {'type': 'MISS_PLAY', 'icon': Icons.toys_rounded},
+      {'type': 'PE', 'icon': Icons.sports_rounded},
+      {'type': 'CIRCLE_TIME', 'icon': Icons.groups_rounded},
+      {'type': 'STORY_TIME', 'icon': Icons.menu_book_rounded},
+      {'type': 'DAILY_ACTIVITY', 'icon': Icons.extension_rounded},
+      {'type': 'ARABIC_AND_ISLAMIC', 'icon': Icons.auto_stories_rounded},
+    ];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _sectionTitle('log_activity'.tr, color, Icons.sports_esports_rounded),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 6,
+          runSpacing: 6,
+          children: types.map((item) {
+            final type = item['type'] as String;
+            return _addTypeBtn(
+              light,
+              color,
+              item['icon'] as IconData,
+              type.tr,
+              () => ctrl.addActivity(_slug, type),
+            );
+          }).toList(),
+        ),
+        ...draft.activities.map((entry) {
+          return _entryCard(
+            light,
+            color,
+            icon: ctrl.activityIcon(entry.type),
+            title: ctrl.activityLabel(entry.type),
+            time: entry.startTime,
+            onRemove: () => ctrl.removeActivity(_slug, entry.id),
+            onToggleTime: () => _pickOrClearTime(
+              context,
+              entry.startTime,
+              (time) => ctrl.setActivityStart(_slug, entry.id, time),
+            ),
+            extra: Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Wrap(
+                spacing: 4,
+                children: [15, 30, 45, 60].map((m) {
+                  final selected = entry.minutes == m;
+                  return GestureDetector(
+                    onTap: () => ctrl.setActivityMinutes(_slug, entry.id, m),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: selected ? color : Colors.transparent,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: selected ? color : const Color(0xFFCBD5E1),
+                        ),
+                      ),
+                      child: Text(
+                        ctrl.durationLabel(m),
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          color:
+                              selected ? Colors.white : const Color(0xFF64748B),
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          );
+        }),
+      ],
     );
   }
 

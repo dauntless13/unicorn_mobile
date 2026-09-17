@@ -89,12 +89,12 @@ class _HygieneListScreenState extends State<HygieneListScreen> {
                       decoration: BoxDecoration(
                         color: light
                             ? Colors.white
-                            : Colors.white.withOpacity(0.08),
+                            : Colors.white.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
                           color: light
                               ? Colors.grey.shade300
-                              : Colors.white.withOpacity(0.15),
+                              : Colors.white.withValues(alpha: 0.15),
                         ),
                       ),
                       child: Icon(
@@ -132,7 +132,7 @@ class _HygieneListScreenState extends State<HygieneListScreen> {
                     String formattedDateTime = "";
 
                     if (item.date != null) {
-                      DateTime parsedDate = DateTime.parse(item!.date!);
+                      DateTime parsedDate = DateTime.parse(item.date!);
 
                       final dateStr =
                           DateFormat('dd-MMM-yyyy', locale).format(parsedDate);

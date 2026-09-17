@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../../../common_screens/chat/view/chats_screen.dart';
+import '../../../../controller/nursery_module_controller.dart';
 import '../view/screeen/home/view/home_screen.dart';
 import '../view/screeen/kids/view/kids_screen.dart';
 import '../view/screeen/profile/view/profile_screen.dart';
@@ -67,6 +67,10 @@ class MainTabController extends GetxController {
         );
         break;
       case 3:
+        if (!isMobileChatEnabled()) {
+          changeTab(4);
+          return;
+        }
         kidsInitialTabIndex.value = 0;
         selectedKidsStudentSlug.value = null;
         currentScreen.value = ParentChatScreen();

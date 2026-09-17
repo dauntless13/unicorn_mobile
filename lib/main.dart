@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -8,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sizer/sizer.dart';
+import 'package:unicorn/core/utils/android_media_access.dart';
 import 'package:unicorn/service/notification_service/FirebaseNotificationService.dart';
 import 'package:unicorn/translation/app_translation.dart';
 import 'package:unicorn/translation/language_controller.dart';
@@ -17,7 +17,6 @@ import 'routes/app_routs.dart';
 import 'core/Theme/Themes.dart';
 import 'core/Theme/ThemesController.dart';
 import 'core/common_size/common_hight_width.dart';
-import 'core/widget/my_regular_text.dart';
 import 'network_controller.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 var locale1 = "en";
@@ -25,6 +24,7 @@ var localeCountry1 = "US";
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  AndroidMediaAccess.enableSystemPhotoPicker();
 
   await GetStorage.init();
   await Firebase.initializeApp();

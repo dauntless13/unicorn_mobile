@@ -7,7 +7,6 @@ import 'package:unicorn/core/widget/my_regular_text.dart';
 import 'package:unicorn/service/api_service/api_worker.dart';
 import '../../../../core/widget/back_button.dart';
 import '../../../../widget/my_regular_button.dart';
-import '../../../../routes/app_routs.dart';
 import '../../../../widget/common_toastification.dart';
 import '../controller/forgot_password_controller.dart';
 import '../model/forgot_password/forgot_password_request.dart';

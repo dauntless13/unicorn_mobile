@@ -17,7 +17,7 @@ TransitionBuilder buildAppDatePickerThemeBuilder(
 
     Color? resolveForeground(Set<WidgetState> states) {
       if (states.contains(WidgetState.disabled)) {
-        return scheme.onSurface.withOpacity(0.28);
+        return scheme.onSurface.withValues(alpha: 0.28);
       }
       if (states.contains(WidgetState.selected)) {
         return scheme.onPrimary;
@@ -27,13 +27,12 @@ TransitionBuilder buildAppDatePickerThemeBuilder(
 
     return Theme(
       data: base.copyWith(
-        dialogBackgroundColor: scheme.surface,
         colorScheme: scheme,
         datePickerTheme: DatePickerThemeData(
           backgroundColor: scheme.surface,
           headerBackgroundColor: scheme.surface,
           headerForegroundColor: scheme.onSurface,
-          weekdayStyle: TextStyle(color: scheme.onSurface.withOpacity(0.7)),
+          weekdayStyle: TextStyle(color: scheme.onSurface.withValues(alpha: 0.7)),
           dayStyle: TextStyle(color: scheme.onSurface),
           yearStyle: TextStyle(color: scheme.onSurface),
           dayForegroundColor:
@@ -42,14 +41,14 @@ TransitionBuilder buildAppDatePickerThemeBuilder(
               WidgetStateProperty.resolveWith(resolveForeground),
           todayForegroundColor: WidgetStatePropertyAll(primaryColor),
           todayBackgroundColor:
-              WidgetStatePropertyAll(primaryColor.withOpacity(0.12)),
-          todayBorder: BorderSide(color: primaryColor.withOpacity(0.35)),
+              WidgetStatePropertyAll(primaryColor.withValues(alpha: 0.12)),
+          todayBorder: BorderSide(color: primaryColor.withValues(alpha: 0.35)),
         ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
             foregroundColor: primaryColor,
           ),
-        ),
+        ), dialogTheme: DialogThemeData(backgroundColor: scheme.surface),
       ),
       child: child ?? const SizedBox.shrink(),
     );

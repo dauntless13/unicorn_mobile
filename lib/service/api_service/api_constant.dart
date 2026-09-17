@@ -45,6 +45,8 @@ mixin class ApiConstant {
   static const String deleteNapUrl = 'report/deleteNap/';
   static const String napListUrl = 'report/listNap/';
   static const String addActivityUrl = 'report/createActivity/';
+  static const String updateActivityUrl = 'report/updateActivity/';
+  static const String deleteActivityUrl = 'report/deleteActivity/';
   static const String activityListUrl = 'report/listActivity/';
   static const String addHygieneUrl = 'report/createHygiene/';
   static const String updateHygieneUrl = 'report/updateHygiene/';

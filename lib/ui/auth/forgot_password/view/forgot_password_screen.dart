@@ -4,7 +4,6 @@ import 'package:unicorn/core/widget/my_form_field.dart';
 import 'package:unicorn/core/widget/my_regular_text.dart';
 import '../../../../core/widget/back_button.dart';
 import '../../../../widget/my_regular_button.dart';
-import '../../../../routes/app_routs.dart';
 import '../controller/forgot_password_controller.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {

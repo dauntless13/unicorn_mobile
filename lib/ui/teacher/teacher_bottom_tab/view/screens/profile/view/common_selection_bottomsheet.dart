@@ -11,6 +11,7 @@ void showSelectionBottomSheet<T>({
   required void Function(T) onSelect,
   bool isMultiSelect = false,
   List<T>? selectedItems,
+  bool Function(T)? isEnabled,
 }) {
   if (_isSelectionBottomSheetOpen || (Get.isBottomSheetOpen ?? false)) {
     return;
@@ -139,20 +140,23 @@ void showSelectionBottomSheet<T>({
                               }
                             }) ??
                             false;
+                        final enabled = isEnabled?.call(item) ?? true;
 
                         return InkWell(
                           borderRadius: BorderRadius.circular(14),
-                          onTap: () {
-                            onSelect(item);
-                            setStateSheet(() {});
-                            if (!isMultiSelect) Get.back();
-                          },
+                          onTap: enabled
+                              ? () {
+                                  onSelect(item);
+                                  setStateSheet(() {});
+                                  if (!isMultiSelect) Get.back();
+                                }
+                              : null,
                           child: Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 14),
                             decoration: BoxDecoration(
                               color: isSelected
-                                  ? const Color(0xFF0D6E82).withOpacity(0.12)
+                                  ? const Color(0xFF0D6E82).withValues(alpha: 0.12)
                                   : card,
                               borderRadius: BorderRadius.circular(14),
                               border: isSelected
@@ -172,7 +176,9 @@ void showSelectionBottomSheet<T>({
                                       fontWeight: isSelected
                                           ? FontWeight.w600
                                           : FontWeight.w400,
-                                      color: textPrimary,
+                                      color: enabled
+                                          ? textPrimary
+                                          : textSecondary,
                                     ),
                                   ),
                                 ),
@@ -184,10 +190,12 @@ void showSelectionBottomSheet<T>({
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(4),
                                     ),
-                                    onChanged: (_) {
-                                      onSelect(item);
-                                      setStateSheet(() {});
-                                    },
+                                    onChanged: enabled
+                                        ? (_) {
+                                            onSelect(item);
+                                            setStateSheet(() {});
+                                          }
+                                        : null,
                                   ),
                               ],
                             ),

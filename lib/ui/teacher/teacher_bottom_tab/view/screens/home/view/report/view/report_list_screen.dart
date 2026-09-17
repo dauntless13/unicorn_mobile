@@ -173,7 +173,7 @@ class _ReportListScreenState extends State<ReportListScreen> {
 
                       /// VALUE
                       Text(
-                        hasValue ? value! : 'Tap to select'.tr,
+                        hasValue ? value : 'Tap to select'.tr,
                         maxLines: isMultiline ? 2 : 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(

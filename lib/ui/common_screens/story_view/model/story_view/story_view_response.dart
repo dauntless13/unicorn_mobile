@@ -1,6 +1,7 @@
 /// success : true
 /// message : "Story viewed successfully"
 /// data : {"storyId":"69199639-842e-4642-90c8-bdb5596fa683"}
+library;
 
 class StoryViewResponse {
   StoryViewResponse({

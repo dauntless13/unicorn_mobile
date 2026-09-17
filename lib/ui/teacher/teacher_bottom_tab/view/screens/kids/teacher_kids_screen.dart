@@ -143,7 +143,7 @@ final TeacherKidsController controller = Get.put(TeacherKidsController());
 
                     /// VALUE
                     Text(
-                      hasValue ? value! : 'Tap to select'.tr,
+                      hasValue ? value : 'Tap to select'.tr,
                       maxLines: isMultiline ? 2 : 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -344,7 +344,7 @@ final TeacherKidsController controller = Get.put(TeacherKidsController());
           boxShadow: light
               ? [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -382,6 +382,22 @@ final TeacherKidsController controller = Get.put(TeacherKidsController());
                         ? Colors.black
                         : Colors.white,
                   ),
+                  if (student.allowPublicMedia == false) ...[
+                    const SizedBox(height: 4),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFEDD5),
+                        borderRadius: BorderRadius.circular(99),
+                      ),
+                      child: MyRegularText(
+                        label: 'public_media_not_allowed'.tr,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF9A3412),
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: 4),
                   MyRegularText(
                     label:

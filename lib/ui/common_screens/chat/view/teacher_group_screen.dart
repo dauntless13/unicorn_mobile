@@ -21,8 +21,8 @@ class _GT {
   // Cards
   Color get card         => light ? Colors.white              : const Color(0xFF141418);
   Color get cardShadow   => light
-      ? Colors.black.withOpacity(0.07)
-      : Colors.black.withOpacity(0.35);
+      ? Colors.black.withValues(alpha: 0.07)
+      : Colors.black.withValues(alpha: 0.35);
 
   // Dividers
   Color get divider      => light ? const Color(0xFFF0F2F5)   : const Color(0xFF1E1E26);
@@ -32,18 +32,18 @@ class _GT {
   Color get txtSecondary => light ? const Color(0xFF6B7A8D)   : const Color(0xFF5A6A80);
 
   // Stat icon bg
-  Color iconBg(Color c)  => c.withOpacity(light ? 0.08 : 0.18);
+  Color iconBg(Color c)  => c.withValues(alpha: light ? 0.08 : 0.18);
 
   // Count badge bg
-  Color badgeBg(Color c) => c.withOpacity(light ? 0.08 : 0.18);
+  Color badgeBg(Color c) => c.withValues(alpha: light ? 0.08 : 0.18);
 
   // inGroup badge
   Color get inGroupBg    => light
-      ? const Color(0xFF27AE60).withOpacity(0.10)
-      : const Color(0xFF27AE60).withOpacity(0.20);
+      ? const Color(0xFF27AE60).withValues(alpha: 0.10)
+      : const Color(0xFF27AE60).withValues(alpha: 0.20);
   Color get notInBg      => light
-      ? Colors.grey.withOpacity(0.10)
-      : Colors.grey.withOpacity(0.18);
+      ? Colors.grey.withValues(alpha: 0.10)
+      : Colors.grey.withValues(alpha: 0.18);
   Color get notInDot     => light ? Colors.grey.shade400 : Colors.grey.shade600;
   Color get notInTxt     => light ? Colors.grey.shade500 : Colors.grey.shade500;
 
@@ -51,7 +51,7 @@ class _GT {
   Color get emptyIcon    => light ? Colors.grey.shade300 : const Color(0xFF2A2A38);
 
   // Nav button
-  Color get navBtnBg     => Colors.white.withOpacity(light ? 0.18 : 0.12);
+  Color get navBtnBg     => Colors.white.withValues(alpha: light ? 0.18 : 0.12);
 }
 
 // =============================================================================
@@ -164,7 +164,7 @@ class _TeacherGroupScreenState extends State<TeacherGroupScreen>
               width: 80, height: 80,
               decoration: BoxDecoration(
                 color: Colors.white, shape: BoxShape.circle,
-                boxShadow: [BoxShadow(color: _primary.withOpacity(0.35),
+                boxShadow: [BoxShadow(color: _primary.withValues(alpha: 0.35),
                     blurRadius: 20, spreadRadius: 2,
                     offset: const Offset(0, 6))],
               ),
@@ -342,7 +342,7 @@ class _TeacherTileState extends State<_TeacherTile>
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                    color: widget.avatarColor.withOpacity(0.3), width: 2),
+                    color: widget.avatarColor.withValues(alpha: 0.3), width: 2),
               ),
               child: CircleAvatar(
                 radius: 22, backgroundColor: widget.avatarColor,
@@ -371,7 +371,7 @@ class _TeacherTileState extends State<_TeacherTile>
                 color: const Color(0xFF00D4AA),
                 shape: BoxShape.circle,
                 boxShadow: [BoxShadow(
-                    color: const Color(0xFF00D4AA).withOpacity(0.4),
+                    color: const Color(0xFF00D4AA).withValues(alpha: 0.4),
                     blurRadius: 4, spreadRadius: 1)],
               ),
             ),
@@ -495,7 +495,7 @@ class _ParentGroupScreenState extends State<ParentGroupScreen>
               width: 80, height: 80,
               decoration: BoxDecoration(
                 color: Colors.white, shape: BoxShape.circle,
-                boxShadow: [BoxShadow(color: _primary.withOpacity(0.4),
+                boxShadow: [BoxShadow(color: _primary.withValues(alpha: 0.4),
                     blurRadius: 22, spreadRadius: 2,
                     offset: const Offset(0, 6))],
               ),
@@ -686,7 +686,7 @@ class _ParentTileState extends State<_ParentTile>
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                    color: widget.avatarColor.withOpacity(0.3), width: 2),
+                    color: widget.avatarColor.withValues(alpha: 0.3), width: 2),
               ),
               child: ProfileAvatar(
                 radius: 22,
@@ -778,9 +778,9 @@ class _HeaderChip extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
     decoration: BoxDecoration(
-      color: accent.withOpacity(0.18),
+      color: accent.withValues(alpha: 0.18),
       borderRadius: BorderRadius.circular(20),
-      border: Border.all(color: accent.withOpacity(0.55)),
+      border: Border.all(color: accent.withValues(alpha: 0.55)),
     ),
     child: Text(label,
         style: const TextStyle(color: Colors.white,

@@ -37,7 +37,6 @@ class Themes {
     colorScheme: ColorScheme.light(
       primary: primaryColor,
       secondary: secondaryColor,
-      background: backgroundColor,
       surface: _lightSurface,
       error: errorColor,
       onError: errorColor,
@@ -76,7 +75,7 @@ class Themes {
     // ------------------- TEXT SELECTION -------------------
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: primaryColor,
-      selectionColor: primaryColor.withOpacity(0.2),
+      selectionColor: primaryColor.withValues(alpha: 0.2),
       selectionHandleColor: primaryColor,
     ),
 
@@ -84,7 +83,7 @@ class Themes {
 
     iconButtonTheme: const IconButtonThemeData(
       style:
-      ButtonStyle(iconColor: MaterialStatePropertyAll(primaryIconColor)),
+      ButtonStyle(iconColor: WidgetStatePropertyAll(primaryIconColor)),
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: primaryColor,
@@ -148,7 +147,6 @@ class Themes {
     colorScheme: ColorScheme.dark(
       primary: primaryColor,
       secondary: secondaryColor,
-      background: _darkSurface,
       surface: _darkCard,
       error: errorColor,
       onError: errorColor,
@@ -187,7 +185,7 @@ class Themes {
     // ------------------- TEXT SELECTION -------------------
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: primaryColor,
-      selectionColor: primaryColor.withOpacity(0.2),
+      selectionColor: primaryColor.withValues(alpha: 0.2),
       selectionHandleColor: primaryColor,
     ),
 
@@ -195,7 +193,7 @@ class Themes {
 
     iconButtonTheme: const IconButtonThemeData(
       style:
-      ButtonStyle(iconColor: MaterialStatePropertyAll(primaryIconColor)),
+      ButtonStyle(iconColor: WidgetStatePropertyAll(primaryIconColor)),
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: primaryColor,
@@ -289,7 +287,7 @@ class Themes {
 
   // ------------------- APPBAR THEME -------------------
   static AppBarTheme get _lightAppBarTheme => const AppBarTheme(
-    color: Colors.white,
+    backgroundColor: Colors.white,
     elevation: 0,
     systemOverlayStyle: SystemUiOverlayStyle(
       statusBarColor: Colors.white,
@@ -308,7 +306,7 @@ class Themes {
     ),
   );
   static AppBarTheme get _darkAppBarTheme => const AppBarTheme(
-    color: _darkSurface,
+    backgroundColor: _darkSurface,
     elevation: 0,
     systemOverlayStyle: SystemUiOverlayStyle(
       statusBarColor: _darkSurface,

@@ -1,6 +1,7 @@
 /// success : true
 /// message : "story liked successfully"
 /// data : {"storyId":"276053a3-b66b-42e5-aa9c-d3f79bd5e93f","isLike":true,"totalLikes":1}
+library;
 
 class StoryLikeResponse {
   StoryLikeResponse({

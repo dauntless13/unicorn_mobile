@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:unicorn/core/utils/android_media_access.dart';
 import 'package:unicorn/core/utils/gallery_save_helper.dart';
 import 'package:unicorn/service/session/session_helper.dart';
 import 'package:unicorn/widget/common_toastification.dart';
@@ -183,26 +183,8 @@ class ProtectedFileDownloader {
     return Uint8List.fromList(data);
   }
 
-  static Future<Directory> _resolveDownloadDirectory() async {
-    if (Platform.isAndroid) {
-      await _requestAndroidStoragePermission();
-      final downloadDir = Directory('/storage/emulated/0/Download');
-      if (await downloadDir.exists()) return downloadDir;
-      final externalDir = await getExternalStorageDirectory();
-      if (externalDir != null) return externalDir;
-    }
-
-    if (Platform.isIOS) {
-      return getApplicationDocumentsDirectory();
-    }
-
-    return getTemporaryDirectory();
-  }
-
-  static Future<void> _requestAndroidStoragePermission() async {
-    final storageStatus = await Permission.storage.request();
-    if (storageStatus.isGranted) return;
-    await Permission.photos.request();
+  static Future<Directory> _resolveDownloadDirectory() {
+    return AppDownloadDirectory.resolve();
   }
 
   static Future<File> _uniqueFile(Directory directory, String fileName) async {

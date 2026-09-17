@@ -365,7 +365,7 @@ ${post.media?.isNotEmpty == true ? post.media!.first : ''}
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.65),
+                color: Colors.black.withValues(alpha: 0.65),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: MyRegularText(
@@ -501,7 +501,7 @@ ${post.media?.isNotEmpty == true ? post.media!.first : ''}
           decoration: BoxDecoration(
             color: active
                 ? const Color(0xFF0095F6)
-                : _textSecondary.withOpacity(0.4),
+                : _textSecondary.withValues(alpha: 0.4),
             shape: BoxShape.circle,
           ),
         );
@@ -516,7 +516,7 @@ ${post.media?.isNotEmpty == true ? post.media!.first : ''}
           ? widget.controller.likedMap[_id]!
           : (widget.post.isLike ?? false);
       final likes = widget.post.likes ?? [];
-      void _openLikesSheet() {
+      void openLikesSheet() {
         widget.controller.fetchLikeUsers(context, slug);
 
         showModalBottomSheet(
@@ -580,7 +580,7 @@ ${post.media?.isNotEmpty == true ? post.media!.first : ''}
                   ],
                   Expanded(
                     child: GestureDetector(
-                      onTap: _openLikesSheet,
+                      onTap: openLikesSheet,
                       child: RichText(
                         text: TextSpan(
                           style: TextStyle(fontSize: 13.5, color: _textPrimary),
@@ -804,7 +804,7 @@ class _VideoPlayerWidgetState extends State<_VideoPlayerWidget> {
             child: Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5),
+                color: Colors.black.withValues(alpha: 0.5),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -824,7 +824,7 @@ class LikeUsersSheet extends StatefulWidget {
   final TeacherHomeController controller;
   final String postSlug;
 
-  const LikeUsersSheet({
+  const LikeUsersSheet({super.key, 
     required this.controller,
     required this.postSlug,
   });
@@ -867,7 +867,7 @@ class _LikeUsersSheetState extends State<LikeUsersSheet> {
             borderRadius: const BorderRadius.vertical(top: Radius.circular(22)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.15),
+                color: Colors.black.withValues(alpha: 0.15),
                 blurRadius: 30,
                 offset: const Offset(0, -4),
               ),

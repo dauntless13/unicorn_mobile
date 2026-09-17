@@ -301,7 +301,7 @@ class _EditTeacherProfileScreenState extends State<EditTeacherProfileScreen>
                     border: Border.all(color: _teal, width: 3),
                     boxShadow: [
                       BoxShadow(
-                        color: _teal.withOpacity(0.25),
+                        color: _teal.withValues(alpha: 0.25),
                         blurRadius: 20,
                         spreadRadius: 2,
                       ),
@@ -315,7 +315,7 @@ class _EditTeacherProfileScreenState extends State<EditTeacherProfileScreen>
                         : null,
                     child: imageUrl == null || imageUrl.isEmpty
                         ? Icon(Icons.person,
-                            size: 48, color: _teal.withOpacity(0.6))
+                            size: 48, color: _teal.withValues(alpha: 0.6))
                         : null,
                   ),
                 ),
@@ -330,13 +330,13 @@ class _EditTeacherProfileScreenState extends State<EditTeacherProfileScreen>
                       padding: const EdgeInsets.all(7),
                       decoration: BoxDecoration(
                         color: controller.isImageUploading.value
-                            ? _teal.withOpacity(0.45)
+                            ? _teal.withValues(alpha: 0.45)
                             : _teal,
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white, width: 2),
                         boxShadow: [
                           BoxShadow(
-                            color: _teal.withOpacity(0.4),
+                            color: _teal.withValues(alpha: 0.4),
                             blurRadius: 8,
                           )
                         ],
@@ -393,7 +393,7 @@ class _EditTeacherProfileScreenState extends State<EditTeacherProfileScreen>
         boxShadow: light
             ? [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 10,
                   offset: const Offset(0, 2),
                 )
@@ -442,7 +442,7 @@ class _EditTeacherProfileScreenState extends State<EditTeacherProfileScreen>
           color: light ? Colors.grey.shade500 : Colors.grey.shade400,
         ),
         fillColor: cardColor(context),
-        prefixIcon: Icon(icon, size: 20, color: _teal.withOpacity(0.7)),
+        prefixIcon: Icon(icon, size: 20, color: _teal.withValues(alpha: 0.7)),
         border: InputBorder.none,
         focusedBorder: InputBorder.none,
         contentPadding:
@@ -522,7 +522,7 @@ class _EditTeacherProfileScreenState extends State<EditTeacherProfileScreen>
                   child: Row(
                     children: [
                       Icon(Icons.flag_outlined,
-                          size: 20, color: _teal.withOpacity(0.7)),
+                          size: 20, color: _teal.withValues(alpha: 0.7)),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Column(
@@ -585,7 +585,7 @@ class _EditTeacherProfileScreenState extends State<EditTeacherProfileScreen>
                   ),
                   fillColor: cardColor(context),
                   prefixIcon: Icon(Icons.phone_outlined,
-                      size: 20, color: _teal.withOpacity(0.7)),
+                      size: 20, color: _teal.withValues(alpha: 0.7)),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(
@@ -638,7 +638,7 @@ class _EditTeacherProfileScreenState extends State<EditTeacherProfileScreen>
               Icon(
                 icon,
                 size: 20,
-                color: enabled ? _teal.withOpacity(0.7) : Colors.grey.shade400,
+                color: enabled ? _teal.withValues(alpha: 0.7) : Colors.grey.shade400,
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -697,7 +697,7 @@ class _EditTeacherProfileScreenState extends State<EditTeacherProfileScreen>
             : () => controller.updateProfile(context, widget.slug),
         style: ElevatedButton.styleFrom(
           backgroundColor: _teal,
-          disabledBackgroundColor: _teal.withOpacity(0.5),
+          disabledBackgroundColor: _teal.withValues(alpha: 0.5),
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),

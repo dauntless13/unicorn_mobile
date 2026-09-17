@@ -89,7 +89,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     light,
                     icon: Icons.class_outlined,
                     label: 'Select Classes'.tr,
-                    value: controller.selectedClass.value?.name,
+                    value: controller.selectedClasses.isEmpty
+                        ? null
+                        : controller.selectedClasses
+                            .map((e) => e.name ?? "")
+                            .where((name) => name.isNotEmpty)
+                            .join(", "),
                     enabled: true,
                     isMultiline: true,
                     onTap: () async {
@@ -99,11 +104,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         title: "Select Class".tr,
                         items: controller.classList,
                         itemLabel: (e) => e.name ?? "",
-                        isMultiSelect: false,
-                        selectedItems: controller.selectedClass.value != null
-                            ? [controller.selectedClass.value!]
-                            : [],
-                        onSelect: controller.selectClass,
+                        isMultiSelect: true,
+                        selectedItems: controller.selectedClasses,
+                        onSelect: controller.toggleClass,
                       );
                     },
                   )),
@@ -133,11 +136,21 @@ class _AddPostScreenState extends State<AddPostScreen> {
               //   ),
               //   const SizedBox(height: 14),
               // ],
-              if (publishType == 'private'.tr) ...[
+              if (publishType == 'private'.tr || publishType == 'public'.tr) ...[
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _label('students'.tr),
+                    if (publishType == 'public'.tr)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: MyRegularText(
+                          label: 'public_media_warning'.tr,
+                          fontSize: 12,
+                          color: const Color(0xFFB45309),
+                          align: TextAlign.start,
+                        ),
+                      ),
                     Obx(() => _dropdownTile(
                           context,
                           light,
@@ -156,11 +169,24 @@ class _AddPostScreenState extends State<AddPostScreen> {
                               context: context,
                               title: "Select Students",
                               items: controller.studentList,
-                              itemLabel: (e) =>
-                                  "${e.firstName ?? ""} ${e.lastName ?? ""}",
+                              itemLabel: (e) {
+                                final name =
+                                    "${e.firstName ?? ""} ${e.lastName ?? ""}".trim();
+                                if (publishType == 'public'.tr &&
+                                    e.allowPublicMedia == false) {
+                                  return "$name • ${'public_media_not_allowed'.tr}";
+                                }
+                                return name;
+                              },
                               isMultiSelect: true,
                               selectedItems: controller.selectedStudents,
-                              onSelect: controller.toggleStudent,
+                              isEnabled: (student) =>
+                                  publishType != 'public'.tr ||
+                                  student.allowPublicMedia != false,
+                              onSelect: (student) => controller.toggleStudent(
+                                student,
+                                isPrivate: publishType == 'private'.tr,
+                              ),
                             );
                           },
                         )),
@@ -270,7 +296,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
                     /// VALUE
                     Text(
-                      hasValue ? value! : 'Tap to select'.tr,
+                      hasValue ? value : 'Tap to select'.tr,
                       maxLines: isMultiline ? 2 : 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(

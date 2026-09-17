@@ -278,7 +278,7 @@ class _EvolutionFormsListScreenState extends State<EvolutionFormsListScreen> {
             height: 50,
             decoration: BoxDecoration(
               color: _showDateFilter
-                  ? primaryColor.withOpacity(light ? 0.10 : 0.20)
+                  ? primaryColor.withValues(alpha: light ? 0.10 : 0.20)
                   : (light ? Colors.white : const Color(0xFF1A1A1A)),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
@@ -469,7 +469,7 @@ class _EvolutionFormsListScreenState extends State<EvolutionFormsListScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
-                  color: primaryColor.withOpacity(light ? 0.10 : 0.20),
+                  color: primaryColor.withValues(alpha: light ? 0.10 : 0.20),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: MyRegularText(

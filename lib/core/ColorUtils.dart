@@ -10,8 +10,8 @@ const Color screenbackground = Color(0xFFE8FAFC);
 const Color primaryTextColor = Color(0xFF212121);
 const Color Buttonbarbordercolor = Color(0x80142247);
 const Color chiptextcolor = Color(0xFF969696);
-const Color searchbarcolor = const Color(0xFFF0F0F0);
-const Color searchbarcolor1 = const Color(0xFFB4B4B4);
+const Color searchbarcolor = Color(0xFFF0F0F0);
+const Color searchbarcolor1 = Color(0xFFB4B4B4);
 
 //border
 const Color containerborder = Color(0x80002D5B);
@@ -75,8 +75,8 @@ Color softBg(BuildContext context) => isLight(context) ? Colors.grey.shade100 : 
 Color primaryText(BuildContext context) => isLight(context) ? Colors.black87 : Colors.white;
 Color secondaryText(BuildContext context) => isLight(context) ? Colors.grey.shade600 : Colors.grey.shade400;
 
-Color borderClr(BuildContext context) => isLight(context) ? Colors.grey.shade300 : Colors.white.withOpacity(0.12);
-Color dividerClr(BuildContext context) => isLight(context) ? Colors.grey.shade200 : Colors.white.withOpacity(0.08);
+Color borderClr(BuildContext context) => isLight(context) ? Colors.grey.shade300 : Colors.white.withValues(alpha: 0.12);
+Color dividerClr(BuildContext context) => isLight(context) ? Colors.grey.shade200 : Colors.white.withValues(alpha: 0.08);
 
 // Onboarding specific
 Color onboardHeaderLight = const Color(0xFF8DBEC7);

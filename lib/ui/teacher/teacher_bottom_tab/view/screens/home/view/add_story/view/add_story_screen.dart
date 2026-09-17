@@ -1,7 +1,6 @@
-import 'package:video_player/video_player.dart';import 'dart:io';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../../../../../../../core/widget/my_regular_text.dart';
 import '../controller/add_story_controller.dart';

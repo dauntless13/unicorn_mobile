@@ -12,12 +12,12 @@ Widget appBackButton(BuildContext context) {
       decoration: BoxDecoration(
         color: isLight
             ? Colors.white
-            : Colors.white.withOpacity(0.08),
+            : Colors.white.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: isLight
               ? Colors.grey.shade300
-              : Colors.white.withOpacity(0.15),
+              : Colors.white.withValues(alpha: 0.15),
         ),
       ),
       child: Icon(

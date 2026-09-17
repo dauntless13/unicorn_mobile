@@ -190,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       //   fontWeight: FontWeight.w500,
                       // ),
                       MyRegularText(
-                        label: '${data?.nurseryName ?? ''}'.trim(),
+                        label: (data.nurseryName ?? '').trim(),
                         fontSize: 17,
                         fontWeight: FontWeight.w700,
                         color: _textPrimary,
@@ -289,7 +289,7 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.photo_outlined,
-              size: 56, color: _textSecondary.withOpacity(0.5)),
+              size: 56, color: _textSecondary.withValues(alpha: 0.5)),
           const SizedBox(height: 16),
           MyRegularText(
             label: 'No posts yet',

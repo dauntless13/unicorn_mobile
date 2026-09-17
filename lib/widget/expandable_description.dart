@@ -10,12 +10,12 @@ class ExpandableDescription extends StatefulWidget {
   final String seeLessText;
 
   const ExpandableDescription({
-    Key? key,
+    super.key,
     required this.text,
     this.trimLines = 2,
     this.seeMoreText = 'Read more',
     this.seeLessText = 'Read less',
-  }) : super(key: key);
+  });
 
   @override
   State<ExpandableDescription> createState() => _ExpandableDescriptionState();

@@ -716,4 +716,8 @@ const Map<String, String> arSA = {
   'please_complete_one_eval': 'أجب عن كل الأسئلة لطفل واحد على الأقل أولاً',
   'saved_evaluations': 'تم حفظ التقييمات',
   'evaluation_locked': 'هذا التقييم معتمد ولا يمكن تعديله',
+  'public_media_not_allowed': 'غير مسموح في المنشورات العامة',
+  'public_media_warning': 'لا يمكن ظهور هذا الطالب في المنشورات العامة. المنشورات الخاصة ما زالت مسموحة.',
+  'personal_info_hidden': 'المعلومات الشخصية مخفية حسب إعدادات الحضانة',
+  'chat_disabled': 'الدردشة متوقفة حالياً من إدارة الحضانة',
 };

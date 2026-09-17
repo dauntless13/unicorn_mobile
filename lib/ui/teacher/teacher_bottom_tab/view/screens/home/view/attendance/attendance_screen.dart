@@ -12,7 +12,7 @@ import '../add_post/mode/list_student_by_class/list_student_by_class_response.da
 import 'controller/attendance_controller.dart';
 
 class AttendanceScreen extends StatefulWidget {
-  AttendanceScreen({super.key});
+  const AttendanceScreen({super.key});
 
   @override
   State<AttendanceScreen> createState() => _AttendanceScreenState();
@@ -189,7 +189,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
                       /// VALUE
                       Text(
-                        hasValue ? value! : 'Tap to select'.tr,
+                        hasValue ? value : 'Tap to select'.tr,
                         maxLines: isMultiline ? 2 : 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -418,7 +418,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     bool enabled = true,
     bool isLoading = false,
   }) {
-    final displayColor = enabled ? color : color.withOpacity(0.35);
+    final displayColor = enabled ? color : color.withValues(alpha: 0.35);
 
     return Container(
       width: 34,

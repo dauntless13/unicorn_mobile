@@ -168,6 +168,18 @@ class QuickLogConfirmSheet extends StatelessWidget {
         ),
       );
     }
+    for (final item in draft.activities.where((e) => e.isDirty)) {
+      final time =
+          item.startTime == null || item.startTime!.isEmpty ? '' : ' · ${item.startTime}';
+      lines.add(
+        _line(
+          ctrl.activityIcon(item.type),
+          const Color(0xFF10B981),
+          '${ctrl.activityLabel(item.type)} · ${ctrl.durationLabel(item.minutes)}$time',
+          tag: item.isExisting ? 'edited_entry'.tr : 'new_entry'.tr,
+        ),
+      );
+    }
     for (final meal in draft.removedMeals) {
       lines.add(
         _line(
@@ -198,6 +210,17 @@ class QuickLogConfirmSheet extends StatelessWidget {
           Icons.hotel_rounded,
           const Color(0xFF94A3B8),
           ctrl.durationLabel(nap.minutes),
+          tag: 'removed_entry'.tr,
+          removed: true,
+        ),
+      );
+    }
+    for (final item in draft.removedActivities) {
+      lines.add(
+        _line(
+          ctrl.activityIcon(item.type),
+          const Color(0xFF94A3B8),
+          ctrl.activityLabel(item.type),
           tag: 'removed_entry'.tr,
           removed: true,
         ),

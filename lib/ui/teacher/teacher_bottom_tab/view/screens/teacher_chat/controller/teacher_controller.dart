@@ -137,7 +137,7 @@ class TeacherController extends GetxController {
         String parentId = data?.parentId ?? "";
 
       /// 🔹 Generate chatId
-        String chatId = "${teacherId}_${parentId}";
+        String chatId = "${teacherId}_$parentId";
 
       /// teacher token
         String? teacherToken = await FirebaseMessaging.instance.getToken();

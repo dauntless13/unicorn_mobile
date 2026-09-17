@@ -1,6 +1,7 @@
 /// success : true
 /// message : "Story views fetched successfully"
 /// data : {"views":[{"firstName":"natasha","lastName":"Pandya","photoUrl":"https://api.unicorn-class.com/uploads/1773309738313-966397463.jpg"}],"count":1}
+library;
 
 class StoryListViewResponse {
   StoryListViewResponse({

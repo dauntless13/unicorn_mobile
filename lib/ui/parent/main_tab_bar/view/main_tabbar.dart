@@ -6,6 +6,7 @@ import 'package:unicorn/ui/parent/main_tab_bar/view/screeen/kids/view/kids_scree
 import 'package:unicorn/ui/parent/main_tab_bar/view/screeen/profile/view/profile_screen.dart';
 
 import '../../../common_screens/chat/view/chats_screen.dart';
+import '../../../../controller/nursery_module_controller.dart';
 import '../controller/maintab_controller.dart';
 
 class MainTabScreen extends StatelessWidget {
@@ -54,15 +55,27 @@ class MainTabScreen extends StatelessWidget {
 
   Widget _buildBottomBar(BuildContext context) {
     final light = isLight(context);
+    final module = ensureNurseryModuleController();
 
     return Obx(
-      () => Container(
+      () {
+        final chatOn = module.chatEnabled.value;
+        if (!chatOn && controller.selectedIndex.value == 3) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (controller.selectedIndex.value == 3) {
+              controller.changeTab(4);
+            }
+          });
+        }
+        final tabIndexes = chatOn ? const [0, 1, 2, 3, 4] : const [0, 1, 2, 4];
+        final visibleIndex = tabIndexes.indexOf(controller.selectedIndex.value);
+        return Container(
         decoration: BoxDecoration(
           color: light ? Colors.white : const Color(0xFF1E1E1E),
           boxShadow: [
             if (light)
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 10,
                 offset: const Offset(0, -2),
               ),
@@ -79,8 +92,8 @@ class MainTabScreen extends StatelessWidget {
           ),
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
-            currentIndex: controller.selectedIndex.value,
-            onTap: controller.changeTab,
+            currentIndex: visibleIndex < 0 ? 0 : visibleIndex,
+            onTap: (index) => controller.changeTab(tabIndexes[index]),
             backgroundColor: light ? Colors.white : const Color(0xFF1E1E1E),
             elevation: 0,
             selectedItemColor: const Color(0xFF008B8B),
@@ -105,11 +118,12 @@ class MainTabScreen extends StatelessWidget {
                 icon: 'assets/svg/kids.svg',
                 label: 'tab_kids'.tr,
               ),
-              _navItem(
-                context,
-                icon: 'assets/svg/chat.svg',
-                label: 'tab_chat'.tr,
-              ),
+              if (chatOn)
+                _navItem(
+                  context,
+                  icon: 'assets/svg/chat.svg',
+                  label: 'tab_chat'.tr,
+                ),
               _navItem(
                 context,
                 icon: 'assets/svg/settings.svg',
@@ -118,7 +132,8 @@ class MainTabScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
+      );
+      },
     );
   }
   // Widget _buildBottomBar(BuildContext context) {

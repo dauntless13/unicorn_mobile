@@ -1,6 +1,7 @@
 /// success : true
 /// message : "Post deleted successfully"
 /// data : {"slug":"post-t1773987161767-45259"}
+library;
 
 class DeletePostResponse {
   DeletePostResponse({

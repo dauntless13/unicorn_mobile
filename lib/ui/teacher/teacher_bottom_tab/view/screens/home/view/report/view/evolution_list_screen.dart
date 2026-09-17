@@ -137,7 +137,7 @@ class _EvolutionListScreenState extends State<EvolutionListScreen> {
               children: [
                 Expanded(
                   child: Text(
-                    hasValue ? value! : 'Tap to select'.tr,
+                    hasValue ? value : 'Tap to select'.tr,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -192,7 +192,7 @@ class _EvolutionListScreenState extends State<EvolutionListScreen> {
           boxShadow: light
               ? [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.04),
+                    color: Colors.black.withValues(alpha: 0.04),
                     blurRadius: 8,
                     offset: const Offset(0, 3),
                   ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../controller/nursery_module_controller.dart';
 import '../view/screens/calendar/view/teacher_calendar_screen.dart';
 import '../view/screens/home/view/teacher_home_screen.dart';
 import '../view/screens/kids/teacher_kids_screen.dart';
@@ -34,6 +35,10 @@ class TeacherBottomTabController extends GetxController {
         currentScreen.value = TeacherKidsScreen();
         break;
       case 3:
+        if (!isMobileChatEnabled()) {
+          changeTab(4);
+          return;
+        }
         currentScreen.value = TeacherChat();
         break;
       case 4:

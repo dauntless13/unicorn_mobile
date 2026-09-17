@@ -6,6 +6,7 @@ import '../../../../../../core/ColorUtils.dart';
 import '../../../../../../core/widget/back_button.dart';
 import '../../../../../../core/widget/my_regular_text.dart';
 import '../../../../../../core/widget/profile_avatar.dart';
+import '../../../../../../controller/nursery_module_controller.dart';
 import 'controller/teacher_kids_controller.dart';
 
 class StudentDetailsScreen extends StatefulWidget {
@@ -37,10 +38,10 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
       isLight(context) ? Colors.black : Colors.grey.shade400;
 
   Color borderClr(BuildContext context) =>
-      isLight(context) ? Colors.grey.shade300 : Colors.white.withOpacity(0.12);
+      isLight(context) ? Colors.grey.shade300 : Colors.white.withValues(alpha: 0.12);
 
   Color dividerClr(BuildContext context) =>
-      isLight(context) ? Colors.grey.shade200 : Colors.white.withOpacity(0.08);
+      isLight(context) ? Colors.grey.shade200 : Colors.white.withValues(alpha: 0.08);
   final TeacherKidsController controller = Get.put(TeacherKidsController());
 
   @override
@@ -98,12 +99,34 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
 
   // TAB 1: INFO
   Widget _buildInfoTab() {
+    final hidePersonal = !canTeachersViewPersonalInfo() ||
+        controller.studentDetails.value?.personalInfoHidden == true;
+    final publicMediaBlocked =
+        controller.studentDetails.value?.allowPublicMedia == false;
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 16),
           _buildKidInfoCard(true),
+          if (publicMediaBlocked) ...[
+            const SizedBox(height: 12),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFF7ED),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: const Color(0xFFFDBA74)),
+              ),
+              child: MyRegularText(
+                label: 'public_media_warning'.tr,
+                fontSize: 12,
+                color: const Color(0xFF9A3412),
+                align: TextAlign.start,
+              ),
+            ),
+          ],
           const SizedBox(height: 16),
           Container(
             decoration: BoxDecoration(
@@ -124,22 +147,25 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                     controller.studentDetails.value?.className ??   "-".tr,),
                 _buildInfoSection('roll_no'.tr,
                     controller.studentDetails.value?.rollNo ??   "-".tr,),
-                _buildInfoSection(
+                if (!hidePersonal)
+                  _buildInfoSection(
                     'phone_no'.tr,
                     '${controller.studentDetails.value?.parentProfile?.countryCode} ${controller
                         .studentDetails.value?.parentProfile?.phoneNumber ??
                         "-".tr}',
                     isPhone: true),
-                _buildInfoSection(
+                if (!hidePersonal)
+                  _buildInfoSection(
                     'father_name'.tr,
                     "${controller.studentDetails.value?.parentProfile?.firstName ??   "-".tr} "
                             "${controller.studentDetails.value?.parentProfile?.lastName ??   "-".tr}"
                         .trim()),
                 _buildInfoSection('address'.tr,
-                    controller.studentDetails.value?.address ??   "-".tr,),
+                    hidePersonal ? 'personal_info_hidden'.tr : (controller.studentDetails.value?.address ??   "-".tr),),
               ],
             ),
           ),
+          if (!hidePersonal) ...[
           const SizedBox(height: 24),
           _buildSectionHeader('parent_information'.tr),
           const SizedBox(height: 12),
@@ -213,6 +239,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
               ],
             ),
           ),
+          ],
 
           Visibility(
             visible:
@@ -323,7 +350,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),

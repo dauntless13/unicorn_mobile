@@ -107,7 +107,7 @@ class _StudentLeaveListingState extends State<StudentLeaveListing> {
     final days = _totalDays(leave.leaveFrom, leave.leaveTo);
     final typeLabel = _leaveTypeLabel(leave.leaveType);
     final title = days != null
-        ? "${days} ${'days_leave'.tr}"
+        ? "$days ${'days_leave'.tr}"
         : (typeLabel.isEmpty ? 'leave'.tr : typeLabel);
     final subtitle = days != null ? typeLabel : (leave.name ?? "");
 

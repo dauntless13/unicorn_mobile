@@ -9,7 +9,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:unicorn/core/utils/protected_file_downloader.dart';
 import 'package:unicorn/core/widget/profile_avatar.dart';
@@ -45,8 +44,8 @@ class _T {
   Color get bubbleMe      => light ? const Color(0xFFD9FDD3)  : const Color(0xFF1A3A1A);
   Color get bubbleThem    => light ? Colors.white             : const Color(0xFF1E1E26);
   Color get bubbleShadow  => light
-      ? Colors.black.withOpacity(0.06)
-      : Colors.black.withOpacity(0.3);
+      ? Colors.black.withValues(alpha: 0.06)
+      : Colors.black.withValues(alpha: 0.3);
   Color get bubbleTxtMe   => light ? const Color(0xFF111827)  : const Color(0xFFE0F2E0);
   Color get bubbleTxtThem => light ? const Color(0xFF111827)  : Colors.white;
   Color get tsMe          => light ? Colors.green.shade800    : Colors.green.shade300;
@@ -66,7 +65,7 @@ class _T {
   Color get recBorder     => light ? const Color(0xFFE0E4EC)  : const Color(0xFF2A2A38);
   Color get recTxt        => light ? Colors.black87           : Colors.white;
   Color get recMuted      => light ? const Color(0xFF9E9E9E)  : const Color(0xFF4A5568);
-  Color get recCancelBg   => light ? Colors.red.shade50       : Colors.red.shade900.withOpacity(0.3);
+  Color get recCancelBg   => light ? Colors.red.shade50       : Colors.red.shade900.withValues(alpha: 0.3);
 
   // Media sheet
   Color get sheetBg       => light ? Colors.white             : const Color(0xFF141418);
@@ -132,7 +131,7 @@ class _FullScreenMediaViewerState extends State<FullScreenMediaViewer> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.7),
+        backgroundColor: Colors.black.withValues(alpha: 0.7),
         leading: IconButton(
           icon: const Icon(Icons.close, color: Colors.white),
           onPressed: () => Navigator.pop(context),
@@ -356,39 +355,6 @@ class _FullScreenMediaViewerState extends State<FullScreenMediaViewer> {
 
   Future<void> _downloadImage() async {
     await _saveMediaToGallery();
-  }
-
-  Future<Directory> _resolveDownloadDirectory() async {
-    if (Platform.isAndroid) {
-      await _requestAndroidStoragePermission();
-
-      final downloadDir = Directory('/storage/emulated/0/Download');
-      if (await downloadDir.exists()) {
-        return downloadDir;
-      }
-
-      final externalDir = await getExternalStorageDirectory();
-      if (externalDir != null) {
-        return externalDir;
-      }
-    }
-
-    if (Platform.isIOS) {
-      return getApplicationDocumentsDirectory();
-    }
-
-    return await getTemporaryDirectory();
-  }
-
-  Future<void> _requestAndroidStoragePermission() async {
-    final storageStatus = await Permission.storage.request();
-    if (storageStatus.isGranted) return;
-
-    final photosStatus = await Permission.photos.request();
-    if (photosStatus.isGranted || photosStatus.isLimited) return;
-
-    final videosStatus = await Permission.videos.request();
-    if (videosStatus.isGranted || videosStatus.isLimited) return;
   }
 
   Future<File> _downloadNetworkImage({
@@ -1328,8 +1294,8 @@ class _AllMessageScreenState extends State<AllMessageScreen>
     final durationLabel = "$m:$s";
 
     final playBtnBg  = isMe
-        ? Colors.green.shade700.withOpacity(t.light ? 0.2 : 0.3)
-        : _T.brand.withOpacity(0.15);
+        ? Colors.green.shade700.withValues(alpha: t.light ? 0.2 : 0.3)
+        : _T.brand.withValues(alpha: 0.15);
     final playBtnClr = isMe
         ? (t.light ? Colors.green.shade800 : Colors.green.shade300)
         : (t.light ? _T.brand : Colors.lightBlue.shade200);
@@ -1385,7 +1351,7 @@ class _AllMessageScreenState extends State<AllMessageScreen>
         Container(
           width: 44, height: 44,
           decoration: BoxDecoration(
-              color: iconColor.withOpacity(t.light ? 0.12 : 0.22),
+              color: iconColor.withValues(alpha: t.light ? 0.12 : 0.22),
               borderRadius: BorderRadius.circular(10)),
           child: Icon(icon, color: iconColor, size: 26),
         ),

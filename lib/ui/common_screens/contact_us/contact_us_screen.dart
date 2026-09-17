@@ -54,7 +54,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Colors.black.withValues(alpha: 0.05),
                       blurRadius: 8,
                       offset: Offset(0, 2),
                     ),
@@ -111,7 +111,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Color(0xFF0D7A8A).withOpacity(0.3),
+            color: Color(0xFF0D7A8A).withValues(alpha: 0.3),
             blurRadius: 12,
             offset: Offset(0, 4),
           ),
@@ -127,7 +127,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
               width: 120,
               height: 120,
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
             ),
@@ -148,7 +148,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 'contact_live_chat'.tr,
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.white.withOpacity(0.9),
+                  color: Colors.white.withValues(alpha: 0.9),
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -215,7 +215,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
       child: Container(
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.2),
+          color: Colors.white.withValues(alpha: 0.2),
           shape: BoxShape.circle,
         ),
         child: Icon(
@@ -248,7 +248,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 8,
                   offset: Offset(0, 2),
                 ),
@@ -286,7 +286,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 8,
                   offset: Offset(0, 2),
                 ),
