@@ -32,7 +32,9 @@ workflows:
       - name: Add certificates to keychain
         script: keychain add-certificates
       - name: Get Flutter packages
-        script: flutter pub get
+        script: |
+          flutter config --no-enable-swift-package-manager
+          flutter pub get
       - name: Install CocoaPods
         script: |
           find . -name "Podfile" -execdir pod install \;
