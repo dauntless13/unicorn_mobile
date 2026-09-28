@@ -766,9 +766,18 @@ class _KidsScreenState extends State<KidsScreen>
     if (time.isEmpty) return 'No Data';
 
     try {
-      final local = DateTime.parse(time).toLocal();
-      final formattedTime = DateFormat('hh:mm a').format(local);
-      return '${DateFormat('dd-MMM-yyyy').format(local)} at $formattedTime';
+      final qatar = DateTime.parse(time).toUtc().add(const Duration(hours: 3));
+      final hour24 = qatar.hour;
+      final hour12 = hour24 % 12 == 0 ? 12 : hour24 % 12;
+      final minute = qatar.minute.toString().padLeft(2, '0');
+      final period = hour24 >= 12 ? 'PM' : 'AM';
+      const months = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+      ];
+      final day = qatar.day.toString().padLeft(2, '0');
+      final date = '$day-${months[qatar.month - 1]}-${qatar.year}';
+      return '\u200E$date at ${hour12.toString().padLeft(2, '0')}:$minute $period';
     } catch (e) {
       return time;
     }
@@ -872,8 +881,8 @@ class _KidsScreenState extends State<KidsScreen>
   String _formatDateTimeWithAt(String time) {
     final date = DateFormat('dd-MMM-yyyy').format(_selectedDate);
     final trimmed = time.trim();
-    if (trimmed.isEmpty) return date;
-    return '$date at $trimmed';
+    if (trimmed.isEmpty) return '\u200E$date';
+    return '\u200E$date at $trimmed';
   }
 
   Widget _buildActivityItem(String title, String time) {
@@ -936,7 +945,7 @@ class _KidsScreenState extends State<KidsScreen>
               color: primaryText(context)),
           const SizedBox(height: 16),
           ...naps.map((n) => _buildNapItem(
-              'nap'.tr, "${n.startTime ?? ''} — ${n.endTime ?? ''}")),
+              'nap'.tr, '\u200E${n.startTime ?? ''} — ${n.endTime ?? ''}')),
         ],
       ),
     );
@@ -1265,6 +1274,7 @@ class _KidsScreenState extends State<KidsScreen>
     final theme = pw.ThemeData.withFont(base: baseFont, bold: boldFont);
     String safe(String? v) =>
         (v == null || v.trim().isEmpty) ? 'No Data'.tr : v;
+    String clockSafe(String? v) => '\u200E${safe(v)}';
     List<T> maybeReverse<T>(List<T> list) =>
         isRtl ? list.reversed.toList() : list;
     String formatHygienePdf(String value) =>
@@ -1414,8 +1424,8 @@ class _KidsScreenState extends State<KidsScreen>
               report.activity!
                   .map((a) => [
                         formatActivityPdf(safe(a.activityType)),
-                        safe(a.startTime),
-                        safe(a.endTime),
+                        clockSafe(a.startTime),
+                        clockSafe(a.endTime),
                         safe(a.description),
                       ])
                   .toList(),
@@ -1429,8 +1439,8 @@ class _KidsScreenState extends State<KidsScreen>
             buildTable(
               report.nap!
                   .map((n) => [
-                        safe(n.startTime),
-                        safe(n.endTime),
+                        clockSafe(n.startTime),
+                        clockSafe(n.endTime),
                       ])
                   .toList(),
               ['start_time'.tr, 'end_time'.tr],
@@ -1447,7 +1457,7 @@ class _KidsScreenState extends State<KidsScreen>
                           m.mealName,
                           portion: m.portion,
                         ),
-                        safe(m.time),
+                        clockSafe(m.time),
                       ])
                   .toList(),
               ['meal'.tr, 'time'.tr],
@@ -1461,7 +1471,7 @@ class _KidsScreenState extends State<KidsScreen>
               report.hygiene!
                   .map((h) => [
                         formatHygienePdf(safe(h.hygieneType ?? h.description)),
-                        safe(h.time),
+                        clockSafe(h.time),
                       ])
                   .toList(),
               ['type'.tr, 'time'.tr],
@@ -2100,7 +2110,23 @@ class _KidsScreenState extends State<KidsScreen>
 
   String? _formatMedicalDateTime(DateTime? value) {
     if (value == null) return null;
-    return DateFormat('dd/MM/yyyy hh:mm a').format(value.toLocal());
+    final utc = value.toUtc();
+    final day = utc.day.toString().padLeft(2, '0');
+    final month = utc.month.toString().padLeft(2, '0');
+    final dateOnly = utc.hour == 0 &&
+        utc.minute == 0 &&
+        utc.second == 0 &&
+        utc.millisecond == 0;
+    if (dateOnly) return '\u200E$day/${month}/${utc.year}';
+
+    final qatar = utc.add(const Duration(hours: 3));
+    final hour24 = qatar.hour;
+    final hour12 = hour24 % 12 == 0 ? 12 : hour24 % 12;
+    final minute = qatar.minute.toString().padLeft(2, '0');
+    final period = hour24 >= 12 ? 'PM' : 'AM';
+    final qatarDay = qatar.day.toString().padLeft(2, '0');
+    final qatarMonth = qatar.month.toString().padLeft(2, '0');
+    return '\u200E$qatarDay/$qatarMonth/${qatar.year} ${hour12.toString().padLeft(2, '0')}:$minute $period';
   }
 
   Widget _buildEvaluationFormCard(Evaluations form) {
@@ -2331,16 +2357,15 @@ class _KidsScreenState extends State<KidsScreen>
     if (value == null || value.isEmpty) return null;
     final parsed = DateTime.tryParse(value);
     if (parsed == null) return value;
-    final local = parsed.toLocal();
-    final day = local.day.toString().padLeft(2, '0');
-    final month = local.month.toString().padLeft(2, '0');
-    final year = local.year.toString();
-    final hour = (local.hour % 12 == 0 ? 12 : local.hour % 12)
-        .toString()
-        .padLeft(2, '0');
-    final minute = local.minute.toString().padLeft(2, '0');
-    final period = local.hour >= 12 ? 'PM' : 'AM';
-    return '$day/$month/$year $hour:$minute $period';
+    final qatar = parsed.toUtc().add(const Duration(hours: 3));
+    final day = qatar.day.toString().padLeft(2, '0');
+    final month = qatar.month.toString().padLeft(2, '0');
+    final year = qatar.year.toString();
+    final hour24 = qatar.hour;
+    final hour = (hour24 % 12 == 0 ? 12 : hour24 % 12).toString().padLeft(2, '0');
+    final minute = qatar.minute.toString().padLeft(2, '0');
+    final period = hour24 >= 12 ? 'PM' : 'AM';
+    return '\u200E$day/$month/$year $hour:$minute $period';
   }
 
   Future<void> _openEvaluationReportActions(Evaluations form) async {
